@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navigation/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,11 +44,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${roboto.className} bg-slate-950 text-white min-h-screen`}
-      >
+      <body className={`${roboto.className} bg-background text-white`}>
         <Navbar />
-        {children}
+
+        <div className="min-h-screen mt-14 sm:mt-16 md:mt-20 px-4 sm:px-6 lg:px-20">
+          {children}
+        </div>
+
         <Footer />
       </body>
     </html>

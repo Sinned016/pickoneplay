@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@theme {
+  --color-cyan: #2F80ED;   /* cyan-300 */
+  --color-red: #f87171;    /* red-400 */
+  --color-muted: #d1d5db;    /* gray-300 */
+  --color-background: #0b0b0b;  /* close to black */
+  --color-button: #2F80ED;
+}
+
 @layer utilities {
   .animate-in {
     animation-fill-mode: both;
