@@ -8,6 +8,9 @@ import { prisma } from "../config/db.js";
 //Then you send from frontend:
 //pairs: [card1, card2, card3]
 
+
+// I need more info about the game here
+// genres etc... so we can filter when searching on the frontend.
 const createGame = async (req, res) => {
   try {
     const user = req.user;
