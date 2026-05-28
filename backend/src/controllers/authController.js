@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email, username, password } = req.body;
 
   // Check if user already exists
   const userExists = await prisma.user.findUnique({
@@ -23,24 +23,23 @@ const register = async (req, res) => {
   // Create the user
   const user = await prisma.user.create({
     data: {
-      name,
       email,
+      username,
       password: hashedPassword,
     },
   });
 
-  // Generate JWT token
-  const token = generateToken(user.id, res);
+  // Generate JWT token. I only wanna do this when logging in, not registering.
+  // const token = generateToken(user.id, res);
 
   res.status(201).json({
     status: "success",
     data: {
       user: {
         id: user.id,
-        name: name,
         email: email,
+        username: username,
       },
-      token,
     },
   });
 };

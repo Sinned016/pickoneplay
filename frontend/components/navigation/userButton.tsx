@@ -37,12 +37,9 @@ export default function UserButton() {
                   >
                     Settings
                   </Link>
-                  <Link
-                    className="text-black text-sm lg:text-base hover:text-cyan"
-                    href={"#"}
-                  >
+                  <button className="text-black text-sm lg:text-base hover:text-cyan">
                     Logout
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
@@ -51,7 +48,7 @@ export default function UserButton() {
       ) : (
         <Link
           href={"/login"}
-          className="flex gap-2 items-center py-1 px-3 bg-button rounded-sm cursor-pointer "
+          className="flex gap-2 items-center py-1 px-3 bg-button hover:bg-button-hover rounded-sm cursor-pointer transition-all duration-200"
         >
           <LogIn className="w-5 h-5 text-white" />
           <div className=" text-white text-xs lg:text-lg">Sign in</div>

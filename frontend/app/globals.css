@@ -1,11 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cyan: #2F80ED;   /* cyan-300 */
-  --color-red: #f87171;    /* red-400 */
-  --color-muted: #d1d5db;    /* gray-300 */
-  --color-background: #0b0b0b;  /* close to black */
-  --color-button: #2F80ED;
+  /* Primary accent (blue) */
+  --color-main1: #3b82f6;        /* base blue */
+  --color-main1-hover: #60a5fa;  /* lighter + glow feel */
+
+  /* Secondary accent (red) */
+  --color-main2: #ef4444;        /* base red */
+  --color-main2-hover: #f87171;  /* softer bright red */
+
+  /* Text */
+  --color-text1: #d1d5db;
+  --color-text1-hover: #f9fafb;
+
+  /* Buttons */
+  --color-button: #2563eb;
+  --color-button-hover: #3b82f6;
+
+  /* Background */
+  --color-background: #0b0b0b;
+  --color-muted: #9ca3af;
 }
 
 @layer utilities {

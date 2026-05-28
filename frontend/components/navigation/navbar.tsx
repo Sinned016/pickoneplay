@@ -10,8 +10,8 @@ export default function Navbar() {
           <div className="flex items-center space-x-2 cursor-pointer">
             <div className="">Logo</div>
             <span className="text-lg sm:text-xl md:text-2xl font-medium">
-              <span className="text-cyan">Pick</span>
-              <span className="text-red">One</span>
+              <span className="text-main1">Pick</span>
+              <span className="text-main2">One</span>
               <span className="text-white">Play</span>
             </span>
           </div>
@@ -45,31 +45,6 @@ export default function Navbar() {
           {/* <MobileMenu /> */}
         </div>
       </div>
-
-      {/* {mobileMenuOpen && (
-        <div className="md:hidden bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 animate-in slide-in-from-top animate-duration-300">
-          <div className="px-4 py-4 sm:py-6 sm:px-6 flex flex-col gap-3 sm:gap-4">
-            <Link
-              className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
-              href={"/test1"}
-            >
-              Test1
-            </Link>
-            <Link
-              className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
-              href={"/test2"}
-            >
-              Test2
-            </Link>
-            <Link
-              className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
-              href={"/test3"}
-            >
-              Test3
-            </Link>
-          </div>
-        </div>
-      )} */}
     </nav>
   );
 }

@@ -10,7 +10,7 @@ export default function MobileMenu() {
   return (
     <>
       <button
-        className="md:hidden p-2 text-gray-300 hover:text-white cursor-pointer"
+        className="md:hidden p-2 text-text1 hover:text-text-hover cursor-pointer"
         onClick={() => setMobileMenuOpen((prev) => !prev)}
       >
         {mobileMenuOpen ? (
@@ -24,15 +24,15 @@ export default function MobileMenu() {
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 w-full md:hidden bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 animate-in slide-in-from-top animate-duration-300">
           <div className="px-4 py-4 sm:py-6 sm:px-6 flex flex-col gap-3 sm:gap-4">
-            <Link className="text-gray-300 hover:text-white" href="/test1">
+            <Link className="text-text1 hover:text-text-hover" href="/test1">
               Test1
             </Link>
 
-            <Link className="text-gray-300 hover:text-white" href="/test2">
+            <Link className="text-text1 hover:text-text-hover" href="/test2">
               Test2
             </Link>
 
-            <Link className="text-gray-300 hover:text-white" href="/test3">
+            <Link className="text-text1 hover:text-text-hover" href="/test3">
               Test3
             </Link>
           </div>
