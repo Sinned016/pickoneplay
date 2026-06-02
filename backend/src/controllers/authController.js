@@ -1,6 +1,7 @@
 import { prisma } from "../config/db.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
   const { email, username, password } = req.body;
@@ -11,9 +12,10 @@ const register = async (req, res) => {
   });
 
   if (userExists) {
-    return res
-      .status(400)
-      .json({ error: "User already exists with this email" });
+    return res.status(400).json({
+      status: "error",
+      message: "User already exists with this email",
+    });
   }
 
   // Hash the password
@@ -53,14 +55,20 @@ const login = async (req, res) => {
   });
 
   if (!user) {
-    return res.status(400).json({ error: "Invalid email or password" });
+    return res.status(400).json({
+      status: "error",
+      message: "No account with that email",
+    });
   }
 
   // Verify the password
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-    return res.status(400).json({ error: "Invalid email or password" });
+    return res.status(400).json({
+      status: "error",
+      message: "Invalid email or password",
+    });
   }
 
   // Generate JWT token
@@ -78,6 +86,7 @@ const login = async (req, res) => {
   });
 };
 
+// Since im using next.js api as a proxy I cant delete the jwt token here. I will do it in the next.js API routes.
 const logout = (req, res) => {
   // Setting the cookie to nothing
   res.cookie("jwt", "", {
@@ -91,4 +100,40 @@ const logout = (req, res) => {
   });
 };
 
-export { register, login, logout };
+const Me = async (req, res) => {
+  try {
+    const token = req.cookies?.jwt;
+
+    // No token = guest user
+    if (!token) {
+      return res.status(200).json({ user: null });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        createdAt: true,
+      },
+    });
+
+    // Token valid but user missing (deleted account etc.)
+    if (!user) {
+      return res.status(200).json({ user: null });
+    }
+
+    return res.status(200).json({ user });
+  } catch (err) {
+    // Invalid/expired token = treat as guest
+    return res
+      .status(200)
+      .json({ user: null, message: "Something went wrong, proceed as guest" });
+  }
+};
+
+export { register, login, Me };

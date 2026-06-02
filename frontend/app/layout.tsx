@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Roboto } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navigation/navbar";
+import AuthInitializer from "@/components/authInitializer";
 
 
 const roboto = Roboto({
@@ -38,6 +39,8 @@ export default function RootLayout({
       <body
         className={`${roboto.className} bg-background text-text1 flex flex-col min-h-screen `}
       >
+        <AuthInitializer />
+
         <Navbar />
 
         <div className="flex-1 flex flex-col pt-14 sm:pt-16 md:pt-20 px-4 sm:px-6 lg:px-20">

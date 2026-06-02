@@ -1,11 +1,11 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { connectDB } from "./config/db.js";
 import { disconnectDB } from "./config/db.js";
 
 // Import Routes
 import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
 import gameRoutes from "./routes/gameRoutes.js";
 
 config();
@@ -17,9 +17,10 @@ const app = express();
 app.use(express.json()); // Node.js and express servers don't know how to naturally handle json by defauly, so we need this.
 app.use(express.urlencoded({ extended: true })); // Not fully required, this is used to parse data from an HTML form submission.
 
+app.use(cookieParser());
+
 // API Routes
 app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
 app.use("/game", gameRoutes);
 
 app.get("/hello", (req, res) => {

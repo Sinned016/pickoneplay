@@ -4,11 +4,11 @@ export default function Navbar() {
   // Fetch logged in user here.
 
   return (
-    <nav className="fixed top-0 w-full z-50 transition-all duration-300 bg-gray-600/20 backdrop-blur-sm">
+    <nav className="fixed top-0 w-full z-50 transition-all duration-300 bg-surface1 backdrop-blur-sm">
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-20">
         <div className="flex justify-between items-center h-14 sm:h-16 md:h-20 ">
           <div className="flex items-center space-x-2 cursor-pointer">
-            <div className="">Logo</div>
+            {/* <div className="">Logo</div> */}
             <span className="text-lg sm:text-xl md:text-2xl font-medium">
               <span className="text-main1">Pick</span>
               <span className="text-main2">One</span>
