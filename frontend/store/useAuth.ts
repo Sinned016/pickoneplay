@@ -22,6 +22,7 @@ export const useAuth = create<AuthStore>((set) => ({
   fetchUser: async () => {
     try {
       const res = await fetch("/api/auth/me", {
+        method: "GET",
         credentials: "include",
       });
 

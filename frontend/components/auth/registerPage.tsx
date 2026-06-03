@@ -49,7 +49,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex-1 flex items-center justify-center">
-      <div className="relative bg-gray-600/20 rounded-xl w-100 mx-auto">
+      <div className="relative bg-surface1 rounded-xl w-100 mx-auto border border-surface1-hover">
         {/* <X className="w-5 h-5 absolute right-5 top-5" /> */}
 
         <div className="flex flex-col gap-6 p-6">
@@ -149,7 +149,7 @@ export default function RegisterPage() {
 
             <button
               disabled={isSubmitting}
-              className="mt-6 py-2 px-3 bg-button hover:bg-button-hover w-full text-white text-lg rounded-sm transition-all duration-200 cursor-pointer"
+              className="mt-6 py-2 px-3 bg-button hover:bg-button-hover w-full text-black text-lg rounded-sm transition-all duration-200 cursor-pointer"
             >
               {isSubmitting ? "Loading..." : "Register"}
             </button>

@@ -37,13 +37,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} bg-background text-text1 flex flex-col min-h-screen `}
+        className={`${roboto.className} background2 text-text1 flex flex-col min-h-screen `}
       >
         <AuthInitializer />
 
         <Navbar />
 
-        <div className="flex-1 flex flex-col pt-14 sm:pt-16 md:pt-20 px-4 sm:px-6 lg:px-20">
+        <div className="flex flex-1 flex-col pt-16 md:pt-17 lg:pt-18">
           {children}
         </div>
 

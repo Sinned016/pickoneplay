@@ -22,7 +22,7 @@ export default function UserButton() {
             onClick={() => setMenuOpen((prev) => !prev)}
             className="p-1 rounded-full bg-white/80 hover:bg-white cursor-pointer transition-all duration-200"
           >
-            <User className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-black stroke-3" />
+            <User className="w-5 h-5 sm:w-6 sm:h-6  text-black stroke-3" />
           </button>
 
           {/* // Dropdown */}
@@ -58,10 +58,10 @@ export default function UserButton() {
       ) : (
         <Link
           href={"/login"}
-          className="flex gap-2 items-center py-1 px-3 bg-button hover:bg-button-hover rounded-sm cursor-pointer transition-all duration-200"
+          className="flex gap-2 items-center py-1 px-3 bg-button hover:bg-button-hover rounded-lg cursor-pointer transition-all duration-200"
         >
-          <LogIn className="w-5 h-5 text-white" />
-          <div className=" text-white text-xs lg:text-lg">Sign in</div>
+          <LogIn className="w-5 h-5 text-black" />
+          <div className=" text-black text-xs lg:text-lg">Sign in</div>
         </Link>
       )}
     </div>

@@ -2,8 +2,8 @@
 
 @theme {
   /* Primary accent (blue) */
-  --color-main1: #3b82f6;        /* base blue */
-  --color-main1-hover: #60a5fa;  /* lighter + glow feel */
+  --color-main1: #67E8F9;        /* base blue */
+  --color-main1-hover: #7DECFB;  /* lighter + glow feel */
 
   /* Secondary accent (red) */
   --color-main2: #ef4444;        /* base red */
@@ -14,21 +14,81 @@
   --color-text1-hover: #f9fafb;
 
   /* Buttons */
-  --color-button: #2563eb;
-  --color-button-hover: #3b82f6;
+  --color-button: #67E8F9;
+  --color-button-hover: #7DECFB;
 
   /* Background */
   --color-background: #0b0b0b;
 
   /* Surface */
-  --color-surface1: #1C1C1C;
-  --color-surface1-hover: #232323;
+  --color-surface1: #262626;
+  --color-surface1-hover: #303030;
 
-  --color-surface2: #262626;
-  --color-surface2-hover: #2C2C2C;
-
-  
+  --color-surface2: #333333;
+  --color-surface2-hover: #3D3D3D;
 }
+
+/* Try this as backgroundsada: 
+background:
+  radial-gradient(
+    circle at top left,
+    rgba(168,85,247,.08),
+    transparent 35%
+  ),
+  radial-gradient(
+    circle at bottom right,
+    rgba(59,130,246,.06),
+    transparent 35%
+  ),
+  #0b0b0b; */
+
+/* Could also try something like this for background color: 
+background: linear-gradient(
+  180deg,
+  #161616 0%,
+  #0d0d0d 100%
+); */
+
+/* Glow behind the hero:
+background:
+  radial-gradient(circle at top center,
+    rgba(120,120,255,0.15),
+    transparent 40%),
+  #0b0b0b; */
+
+/* Glow top left:
+  background:
+  radial-gradient(circle at 20% 20%,
+    rgba(139,92,246,.12),
+    transparent 30%),
+  radial-gradient(circle at 80% 40%,
+    rgba(59,130,246,.08),
+    transparent 30%),
+  #0a0a0a; */
+
+.background1 {
+  background:
+  radial-gradient(
+    circle at top left,
+    rgba(168, 85, 247, 0.08),
+    transparent 35%
+  ),
+  radial-gradient(
+    circle at bottom right,
+    rgba(59, 130, 246, 0.06),
+    transparent 35%
+  ),
+  #0b0b0b;
+}
+
+.background2 {
+  background: linear-gradient(
+    180deg,
+    #161616 0%,
+    #0d0d0d 100%
+  );
+}
+
 
 @layer utilities {
   .animate-in {

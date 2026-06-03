@@ -43,7 +43,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-1 items-center justify-center">
-      <div className="relative bg-gray-600/20 rounded-xl w-100 mx-auto">
+      <div className="relative bg-surface1 rounded-xl w-100 mx-auto border border-surface1">
         {/* <X className="w-5 h-5 absolute right-5 top-5" /> */}
 
         <div className="flex flex-col gap-6 p-6">
@@ -109,7 +109,7 @@ export default function LoginPage() {
             <div className="mt-6">
               <button
                 disabled={isSubmitting}
-                className="py-2 px-3 bg-button hover:bg-button-hover w-full text-white text-lg rounded-sm transition-all duration-200 cursor-pointer"
+                className="py-2 px-3 bg-button hover:bg-button-hover w-full text-black text-lg rounded-sm transition-all duration-200 cursor-pointer"
               >
                 {isSubmitting ? "Loading..." : "Login"}
               </button>

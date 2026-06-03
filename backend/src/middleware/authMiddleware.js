@@ -15,13 +15,15 @@ export const authMiddleware = async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1]; // ["Bearer", "token"]
   } else if (req.cookies?.jwt) {
-    // If the token is not in the headers, we check if it's in the cookies here.
+    // If the token is not sent as a bearer and is instead sent as a cookie in the headers, we do this instead.
 
     token = req.cookies.jwt;
   }
 
   if (!token) {
-    return res.status(401).json({ error: "Not authorized, no token provided" });
+    return res
+      .status(401)
+      .json({ status: "error", message: "Not authorized, no token provided" });
   }
 
   try {
@@ -33,7 +35,9 @@ export const authMiddleware = async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(401).json({ error: "User no longer exists" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "User no longer exists" });
     }
 
     // Adding user into the req
@@ -42,6 +46,8 @@ export const authMiddleware = async (req, res, next) => {
     // Telling the middleware to continue to our endpoint
     next();
   } catch (err) {
-    return res.status(401).json({ error: "Not authorized, token failed" });
+    return res
+      .status(401)
+      .json({ status: "error", message: "Not authorized, token failed" });
   }
 };

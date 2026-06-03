@@ -100,6 +100,7 @@ const logout = (req, res) => {
   });
 };
 
+// We do not wanna use our authMiddleware for this, since we wanna setu "user: null" if there is none here.
 const Me = async (req, res) => {
   try {
     const token = req.cookies?.jwt;

@@ -42,7 +42,7 @@ export async function LoginAccount(data: LoginFormData) {
 }
 
 export async function LogoutAccount(data: LoginFormData) {
-  const res = await fetch("/api/auth/login", {
+  const res = await fetch("/api/auth/logout", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
