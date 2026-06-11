@@ -228,6 +228,20 @@ const getGame = async (req, res) => {
 };
 
 // Here i will get the full game with id, including pairs
-const getFullGame = async (req, res) => {};
+const getFullGame = async (req, res) => {
+  const gameId = req.params.id;
+
+  const game = await prisma.game.findUnique({
+    where: { id: gameId },
+    include: {
+      pairs: true,
+    },
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: game,
+  });
+};
 
 export { createGame, updateGame, deleteGame, getGame, getGames };
