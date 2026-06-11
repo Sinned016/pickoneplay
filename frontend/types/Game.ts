@@ -1,4 +1,4 @@
 // Add more
-export type CreateGameData = {
+export type Game = {
   id: string;
 };

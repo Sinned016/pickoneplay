@@ -1,16 +1,151 @@
-// Fetch all games or in batches?
+"use client";
 
-import { cookies } from "next/headers";
+import { useState } from "react";
+import CreateGameForm from "@/components/create/createGameForm";
+import CreatePairsForm from "@/components/create/createPairsForm";
+import { useForm, FormProvider } from "react-hook-form";
+import { CreateGameFormData } from "@/types/CreateGameFormData";
+import { createGame } from "@/services/games";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-// Make sure to send the jwt cookie to the backend, if current user does not have a jwt cookie we should instantly go to "/" again.
-export default async function Create() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("jwt");
+export default function Create() {
+  const [step, setStep] = useState(1);
+  const [stepError, setStepError] = useState<string | null>(null);
+  const router = useRouter();
 
-  if (!token) {
-    redirect("/");
-  }
+  const methods = useForm<CreateGameFormData>({
+    defaultValues: {
+      title: "",
+      description: "",
+      category: "",
+      tags: [],
+      image: null,
+      pairs: [
+        { leftName: "", leftImage: null, rightName: "", rightImage: null },
+        { leftName: "", leftImage: null, rightName: "", rightImage: null },
+        { leftName: "", leftImage: null, rightName: "", rightImage: null },
+        { leftName: "", leftImage: null, rightName: "", rightImage: null },
+      ],
+    },
+  });
 
-  return <div>Create game page, only for logged in users</div>;
+  const {
+    trigger,
+    getValues,
+    setError,
+    clearErrors,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  console.log("SAVED VALUES: ", methods.getValues());
+
+  const handleNext = async () => {
+    setStepError(null);
+
+    const valid = await trigger([
+      "title",
+      "description",
+      "category",
+      "tags",
+      "pairs",
+    ]);
+
+    const values = getValues();
+
+    const hasRequiredFields =
+      values.title.trim() &&
+      values.description.trim() &&
+      values.tags.length > 0;
+
+    if (!hasRequiredFields || !valid) {
+      setStepError("Please fill in the required fields.");
+      return;
+    }
+
+    if (valid) {
+      setStep(2);
+    }
+  };
+
+  const onSubmit = async (data: CreateGameFormData) => {
+    console.log("FINAL SUBMIT:", data);
+    setStepError(null);
+
+    const filledPairs = data.pairs.filter(
+      (p) => p.leftName.trim() && p.rightName.trim(),
+    );
+
+    if (filledPairs.length < 4) {
+      setStepError("You must fill at least 4 pairs.");
+      return;
+    }
+
+    const payload = {
+      ...data,
+      pairs: filledPairs,
+    };
+
+    try {
+      const result = await createGame(payload);
+      console.log("SUCCESS:", result);
+
+      router.push("/settings/games");
+    } catch (error: any) {
+      console.error(error);
+      setStepError(error.message || "Something went wrong. Try again.");
+    }
+  };
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)} className="">
+        {step === 1 && <CreateGameForm />}
+
+        {step === 2 && <CreatePairsForm />}
+
+        {stepError && (
+          <div className="text-red-400 text-sm mt-12 text-center">
+            {stepError}
+          </div>
+        )}
+
+        <div className="mt-10">
+          {step === 1 && (
+            <div className="flex justify-end items-center">
+              <button
+                type="button"
+                className="px-4 py-2 rounded-lg bg-main1 hover:bg-main1-hover transition-all duration-200 cursor-pointer text-black font-medium right-0"
+                onClick={handleNext}
+              >
+                Next
+              </button>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="flex justify-between items-center">
+              <button
+                type="button"
+                className="px-4 py-2 rounded-lg bg-white/80 hover:bg-white transition-all duration-200 cursor-pointer text-black font-medium"
+                onClick={() => {
+                  setStepError(null);
+                  setStep(1);
+                }}
+              >
+                Previous
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-lg bg-main1 hover:bg-main1-hover transition-all duration-200 cursor-pointer text-black font-medium"
+              >
+                {isSubmitting ? "Creating..." : "Create Game"}
+              </button>
+            </div>
+          )}
+        </div>
+      </form>
+    </FormProvider>
+  );
 }

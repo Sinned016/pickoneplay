@@ -2,13 +2,20 @@
 
 import { useAuth } from "@/store/useAuth";
 import { useEffect } from "react";
+import { User } from "@/types/User";
 
-export default function AuthInitializer() {
-  const fetchUser = useAuth((state) => state.fetchUser);
+// This should be a server component
 
+type Props = {
+  user: User | null;
+};
+
+export default function AuthInitializer({ user }: Props) {
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    if (user) {
+      useAuth.setState({ user });
+    }
+  }, [user]);
 
   return null;
 }

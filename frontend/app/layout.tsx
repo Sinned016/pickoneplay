@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navigation/navbar";
 import AuthInitializer from "@/components/authInitializer";
+import { cookies } from "next/headers";
 
 
 const roboto = Roboto({
@@ -29,23 +30,39 @@ secondary color: text-red-400
 
 */
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+
+  // Fetch user and pass it to AuthInitializer
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+
+      // IMPORTANT: forward cookies to backend
+      cookie: cookieStore.toString(),
+    },
+  });
+
+  const data = await res.json();
+  // console.log("Logged in user data: ", data);
+
+  const user = data.user;
+
   return (
     <html lang="en">
       <body
         className={`${roboto.className} background2 text-text1 flex flex-col min-h-screen `}
       >
-        <AuthInitializer />
+        <AuthInitializer user={user} />
 
         <Navbar />
 
-        <div className="flex flex-1 flex-col pt-16 md:pt-17 lg:pt-18">
-          {children}
-        </div>
+        <div className="flex-1">{children}</div>
 
         <Footer />
       </body>

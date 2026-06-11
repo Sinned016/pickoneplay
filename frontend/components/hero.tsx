@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <header className="py-24 text-center">
+    <header className="py-24 text-center hero-bg">
       <p className="text-main1 font-medium mb-3">PickOnePlay</p>
 
       <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight">

@@ -1,6 +1,6 @@
-import { CreateGameData } from "@/types/Game";
+import { CreateGameFormData } from "@/types/CreateGameFormData";
 
-export async function createGame(data: CreateGameData) {
+export async function createGame(data: CreateGameFormData) {
   console.log("STEP 1");
 
   const res = await fetch("/api/games/create", {

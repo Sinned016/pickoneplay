@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
 @theme {
+    /* Background */
+  --color-background: #0b0b0b;
+
   /* Primary accent (blue) */
   --color-main1: #67E8F9;        /* base blue */
-  --color-main1-hover: #7DECFB;  /* lighter + glow feel */
+  --color-main1-hover: #A5F3FC;  /* lighter + glow feel */
 
   /* Secondary accent (red) */
   --color-main2: #ef4444;        /* base red */
@@ -13,19 +16,25 @@
   --color-text1: #d1d5db;
   --color-text1-hover: #f9fafb;
 
+  /* Muted Text */
+  --color-muted: #aeb6c2;
+
   /* Buttons */
   --color-button: #67E8F9;
   --color-button-hover: #7DECFB;
 
-  /* Background */
-  --color-background: #0b0b0b;
+  /* Surface layers (modern glassy dark UI) */
+  --color-surface1: rgba(255, 255, 255, 0.03);
+  --color-surface1-hover: rgba(255, 255, 255, 0.06);
 
-  /* Surface */
-  --color-surface1: #262626;
-  --color-surface1-hover: #303030;
+  --color-surface2: rgba(255, 255, 255, 0.05);
+  --color-surface2-hover: rgba(255, 255, 255, 0.08);
 
-  --color-surface2: #333333;
-  --color-surface2-hover: #3D3D3D;
+  /* Border */
+  --color-border1: rgba(255, 255, 255, 0.06);
+  --color-border1-hover: rgba(255, 255, 255, 0.12);
+  --color-border1-strong: rgba(255, 255, 255, 0.18);
+  --color-border1-focus: rgba(255, 255, 255, 0.9);
 }
 
 /* Try this as backgroundsada: 
@@ -89,6 +98,56 @@ background:
   );
 }
 
+
+/* .hero-bg {
+  background: linear-gradient(
+    180deg,
+    #1f2937 0%,
+    #111827 100%
+  );
+} */
+
+/* .hero-bg {
+  background:
+    radial-gradient(
+      circle at center 35%,
+      rgba(103, 232, 249, 0.12),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      #161616 0%,
+      #0d0d0d 100%
+    );
+} */
+
+.hero-bg {
+  background:
+    radial-gradient(
+      circle at left,
+      rgba(103, 232, 249, 0.08),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at right,
+      rgba(239, 68, 68, 0.08),
+      transparent 40%
+    ),
+    linear-gradient(
+      180deg,
+      #161616 0%,
+      #0d0d0d 100%
+    );
+}
+
+.card-shadow {
+  box-shadow:
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.12) 0px 5px 15px 0px,
+    rgba(48, 49, 61, 0.08) 0px 15px 35px 0px;
+}
 
 @layer utilities {
   .animate-in {

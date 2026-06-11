@@ -15,17 +15,30 @@ const createGame = async (req, res) => {
   try {
     const user = req.user;
 
-    const { title, description, pairs } = req.body;
+    const { title, description, image, category, tags, pairs } = req.body;
 
     if (!title || !description || !pairs) {
-      res
-        .status(400)
-        .json({ error: "title, description and game pairs are required" });
+      res.status(400).json({
+        status: "error",
+        message: "Title, Decription and Game pairs is required",
+      });
     }
 
-    if (!Array.isArray(pairs) || pairs.length < 3) {
+    const existingGame = await prisma.game.findUnique({
+      where: { title: title },
+    });
+
+    if (existingGame) {
       return res.status(400).json({
-        error: "You must provide at least 3 pairs",
+        status: "error",
+        message: "A game with that Title already exist",
+      });
+    }
+
+    if (!Array.isArray(pairs) || pairs.length < 4) {
+      return res.status(400).json({
+        status: "error",
+        message: "You must provide atleast 4 pairs",
       });
     }
 
@@ -33,6 +46,9 @@ const createGame = async (req, res) => {
       data: {
         title,
         description,
+        image,
+        category,
+        tags,
         createdBy: user.id,
         pairs: {
           create: pairs.map((pair) => ({
@@ -175,6 +191,22 @@ const deleteGame = async (req, res) => {
   }
 };
 
+const getGames = async (req, res) => {
+  try {
+    const games = await prisma.game.findMany();
+
+    res.status(200).json({
+      status: "success",
+      data: games,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+
 const getGame = async (req, res) => {
   try {
     const gameId = req.params.id;
@@ -195,20 +227,7 @@ const getGame = async (req, res) => {
   }
 };
 
-const getGames = async (req, res) => {
-  try {
-    const games = await prisma.game.findMany();
-
-    res.status(200).json({
-      status: "success",
-      data: games,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: error.message,
-    });
-  }
-};
+// Here i will get the full game with id, including pairs
+const getFullGame = async (req, res) => {};
 
 export { createGame, updateGame, deleteGame, getGame, getGames };

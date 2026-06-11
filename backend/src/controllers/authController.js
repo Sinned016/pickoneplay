@@ -100,7 +100,7 @@ const logout = (req, res) => {
   });
 };
 
-// We do not wanna use our authMiddleware for this, since we wanna setu "user: null" if there is none here.
+// We do not wanna use our authMiddleware for this, since we wanna set "user: null" if there is none here.
 const Me = async (req, res) => {
   try {
     const token = req.cookies?.jwt;
@@ -125,12 +125,14 @@ const Me = async (req, res) => {
 
     // Token valid but user missing (deleted account etc.)
     if (!user) {
+      res.clearCookie("jwt");
       return res.status(200).json({ user: null });
     }
 
     return res.status(200).json({ user });
   } catch (err) {
     // Invalid/expired token = treat as guest
+    res.clearCookie("jwt");
     return res
       .status(200)
       .json({ user: null, message: "Something went wrong, proceed as guest" });

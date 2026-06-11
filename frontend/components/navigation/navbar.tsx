@@ -1,11 +1,10 @@
 import Link from "next/link";
 import UserButton from "./userButton";
+import NavLinks from "./navLinks";
 
-export default function Navbar() {
-  // Fetch logged in user here.
-
+export default async function Navbar() {
   return (
-    <nav className="fixed top-0 w-full z-50 transition-all duration-300 bg-surface1 backdrop-blur-sm">
+    <nav className="w-full z-50 transition-all duration-300 bg-surface1 backdrop-blur-sm">
       <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2 cursor-pointer">
@@ -18,31 +17,10 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Add links here */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            <Link
-              className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
-              href={"/games"}
-            >
-              Games
-            </Link>
-            <Link
-              className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
-              href={"#"}
-            >
-              Random
-            </Link>
+          {/* Nav links */}
+          <NavLinks />
 
-            <Link
-              className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
-              href={"/create"}
-            >
-              Create
-            </Link>
-          </div>
-
-          {/* Login */}
-          {/* Make sure to send down user session */}
+          {/* UserButton or Login */}
           <UserButton />
 
           {/* Old mobile menu */}

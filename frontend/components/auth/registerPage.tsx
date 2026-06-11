@@ -48,19 +48,19 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center">
-      <div className="relative bg-surface1 rounded-xl w-100 mx-auto border border-surface1-hover">
+    <div className="mt-32 md:mt-34 lg:mt-38">
+      <div className="bg-surface1 rounded-xl max-w-md mx-auto border border-border1-strong">
         {/* <X className="w-5 h-5 absolute right-5 top-5" /> */}
 
         <div className="flex flex-col gap-6 p-6">
-          <h2 className="text-3xl text-text1 mx-auto">Register</h2>
+          <h2 className="text-3xl text-text1 text-center">Register</h2>
 
           <form
             className="flex flex-col gap-2"
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
           >
-            <div className="flex items-center gap-2 border border-gray-500 rounded-sm py-3 px-3 focus-within:border-muted focus-within:bg-white/5">
+            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
               <Mail className="w-5 h-5" />
               <input
                 {...register("email", {
@@ -81,7 +81,7 @@ export default function RegisterPage() {
               <div className="text-red-400 text-sm">{errors.email.message}</div>
             )}
 
-            <div className="flex items-center gap-2 border border-gray-500 rounded-sm py-3 px-3 focus-within:border-muted focus-within:bg-white/5">
+            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
               <UserCircle className="w-5 h-5" />
               <input
                 {...register("username", {
@@ -107,7 +107,7 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <div className="flex items-center gap-2 border border-gray-500 rounded-sm py-3 px-3 focus-within:border-muted focus-within:bg-white/5">
+            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
               <Lock className="w-5 h-5" />
               <input
                 {...register("password", {
@@ -129,7 +129,7 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <div className="flex items-center gap-2 border border-gray-500 rounded-sm py-3 px-3 focus-within:border-muted focus-within:bg-white/5">
+            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
               <Lock className="w-5 h-5" />
               <input
                 {...register("confirmPassword", {
