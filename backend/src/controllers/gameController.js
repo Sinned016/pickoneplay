@@ -1,4 +1,6 @@
 import { prisma } from "../config/db.js";
+import { compressImage } from "../utils/compressImage.js";
+import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
 
 // User adds 3 cards:
 // Card 1: Coke vs Fanta
@@ -8,17 +10,19 @@ import { prisma } from "../config/db.js";
 //Then you send from frontend:
 //pairs: [card1, card2, card3]
 
-
 // I need more info about the game here
 // genres etc... so we can filter when searching on the frontend.
 const createGame = async (req, res) => {
   try {
     const user = req.user;
 
-    const { title, description, image, category, tags, pairs } = req.body;
+    const { title, description, category, tags, pairs } = req.body;
 
-    if (!title || !description || !pairs) {
-      res.status(400).json({
+    const parsedTags = JSON.parse(tags || "[]");
+    const parsedPairs = JSON.parse(pairs || "[]");
+
+    if (!title || !description || !parsedPairs) {
+      return res.status(400).json({
         status: "error",
         message: "Title, Decription and Game pairs is required",
       });
@@ -35,28 +39,64 @@ const createGame = async (req, res) => {
       });
     }
 
-    if (!Array.isArray(pairs) || pairs.length < 4) {
+    if (!Array.isArray(parsedPairs) || parsedPairs.length < 4) {
       return res.status(400).json({
         status: "error",
         message: "You must provide atleast 4 pairs",
       });
     }
 
+    const getFile = (fieldname) =>
+      req.files.find((f) => f.fieldname === fieldname);
+
+    let gameImageUrl = null;
+
+    const gameImageFile = getFile("image");
+
+    if (gameImageFile) {
+      const compressed = await compressImage(gameImageFile.buffer);
+      const result = await uploadToCloudinary(compressed);
+
+      gameImageUrl = result.secure_url;
+    }
+
     const game = await prisma.game.create({
       data: {
         title,
         description,
-        image,
+        image: gameImageUrl,
         category,
-        tags,
+        tags: parsedTags,
         createdBy: user.id,
         pairs: {
-          create: pairs.map((pair) => ({
-            leftName: pair.leftName,
-            leftImage: pair.leftImage,
-            rightName: pair.rightName,
-            rightImage: pair.rightImage,
-          })),
+          create: await Promise.all(
+            parsedPairs.map(async (pair, index) => {
+              const leftImageFile = getFile(`pairs[${index}][leftImage]`);
+              const rightImageFile = getFile(`pairs[${index}][rightImage]`);
+
+              let leftImageUrl = null;
+              let rightImageUrl = null;
+
+              if (leftImageFile) {
+                const compressed = await compressImage(leftImageFile.buffer);
+                const result = await uploadToCloudinary(compressed);
+                leftImageUrl = result.secure_url;
+              }
+
+              if (rightImageFile) {
+                const compressed = await compressImage(rightImageFile.buffer);
+                const result = await uploadToCloudinary(compressed);
+                rightImageUrl = result.secure_url;
+              }
+
+              return {
+                leftName: pair.leftName,
+                rightName: pair.rightName,
+                leftImage: leftImageUrl,
+                rightImage: rightImageUrl,
+              };
+            }),
+          ),
         },
       },
       include: {

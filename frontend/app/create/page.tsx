@@ -82,13 +82,38 @@ export default function Create() {
       return;
     }
 
-    const payload = {
-      ...data,
-      pairs: filledPairs,
-    };
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+    formData.append("tags", JSON.stringify(data.tags));
+    formData.append(
+      "pairs",
+      JSON.stringify(
+        filledPairs.map((pair) => ({
+          leftName: pair.leftName,
+          rightName: pair.rightName,
+        })),
+      ),
+    );
+
+    if (data.image) {
+      formData.append("image", data.image);
+    }
+
+    filledPairs.forEach((pair, index) => {
+      if (pair.leftImage) {
+        formData.append(`pairs[${index}][leftImage]`, pair.leftImage);
+      }
+
+      if (pair.rightImage) {
+        formData.append(`pairs[${index}][rightImage]`, pair.rightImage);
+      }
+    });
 
     try {
-      const result = await createGame(payload);
+      const result = await createGame(formData);
       console.log("SUCCESS:", result);
 
       router.push("/settings/games");

@@ -1,16 +1,14 @@
-import { CreateGameFormData } from "@/types/CreateGameFormData";
-
-export async function createGame(data: CreateGameFormData) {
+export async function createGame(data: FormData) {
   console.log("STEP 1");
 
-  const res = await fetch("/api/games/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/game/create`,
+    {
+      method: "POST",
+      credentials: "include",
+      body: data, // IMPORTANT: keep FormData as-is
     },
-    credentials: "include",
-    body: JSON.stringify(data),
-  });
+  );
 
   const responseData = await res.json();
 

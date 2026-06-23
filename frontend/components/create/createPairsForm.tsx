@@ -6,7 +6,8 @@ import { useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 export default function CreatePairsForm() {
-  const { control, register } = useFormContext<CreateGameFormData>();
+  const { control, register, setValue } = useFormContext<CreateGameFormData>();
+  const [previews, setPreviews] = useState<Record<string, string>>({});
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -30,6 +31,27 @@ export default function CreatePairsForm() {
     }
   };
 
+  const handleImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+    side: "left" | "right",
+  ) => {
+    const file = e.target.files?.[0] || null;
+
+    setValue(`pairs.${index}.${side}Image`, file, {
+      shouldDirty: true,
+    });
+
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+
+      setPreviews((prev) => ({
+        ...prev,
+        [`${index}-${side}`]: previewUrl,
+      }));
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6">
       {fields.map((field, i) => (
@@ -45,21 +67,25 @@ export default function CreatePairsForm() {
                 {...register(`pairs.${i}.leftName`)}
               />
 
-              <label className="flex items-center justify-center h-40 border border-white/10 rounded-md bg-black/30 cursor-pointer hover:border-border1-focus transition">
-                <div className="flex flex-col items-center gap-2 text-text1">
-                  <ImagePlus size={28} />
-                  <span className="text-xs">Upload image</span>
-                </div>
+              <label className="flex items-center justify-center h-40 border border-white/10 rounded-md bg-black/30 cursor-pointer hover:border-border1-focus transition overflow-hidden">
+                {previews[`${i}-left`] ? (
+                  <img
+                    src={previews[`${i}-left`]}
+                    alt="Left image preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-2 text-text1">
+                    <ImagePlus size={28} />
+                    <span className="text-xs">Upload image</span>
+                  </div>
+                )}
 
                 <input
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0] || null;
-
-                    // later: setValue(`pairs.${i}.leftImage`, file)
-                  }}
+                  onChange={(e) => handleImageChange(e, i, "left")}
                 />
               </label>
             </div>
@@ -77,21 +103,25 @@ export default function CreatePairsForm() {
                 {...register(`pairs.${i}.rightName`)}
               />
 
-              <label className="flex items-center justify-center h-40 border border-white/10 rounded-md bg-black/30 cursor-pointer hover:border-border1-focus transition">
-                <div className="flex flex-col items-center gap-2 text-text1">
-                  <ImagePlus size={28} />
-                  <span className="text-xs">Upload image</span>
-                </div>
+              <label className="flex items-center justify-center h-40 border border-white/10 rounded-md bg-black/30 cursor-pointer hover:border-border1-focus transition overflow-hidden">
+                {previews[`${i}-right`] ? (
+                  <img
+                    src={previews[`${i}-right`]}
+                    alt="Right image preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-2 text-text1">
+                    <ImagePlus size={28} />
+                    <span className="text-xs">Upload image</span>
+                  </div>
+                )}
 
                 <input
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0] || null;
-
-                    // later: setValue(`pairs.${i}.leftImage`, file)
-                  }}
+                  onChange={(e) => handleImageChange(e, i, "right")}
                 />
               </label>
             </div>

@@ -8,10 +8,11 @@ import {
   getGames,
   updateGame,
 } from "../controllers/gameController.js";
+import { upload } from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
-router.post("/create", authMiddleware, createGame);
+router.post("/create", authMiddleware, upload.any(), createGame);
 
 router.delete("/delete/:id", authMiddleware, deleteGame);
 

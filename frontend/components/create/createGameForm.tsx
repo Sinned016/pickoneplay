@@ -24,6 +24,7 @@ const testTags = ["Food", "Pasta", "Meat", "Soda"];
 
 export default function CreateGameForm() {
   const { register, watch, setValue } = useFormContext<CreateGameFormData>();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const tags = watch("tags") || [];
   const [tagInput, setTagInput] = useState("");
@@ -70,11 +71,19 @@ export default function CreateGameForm() {
         </div>
 
         <div className="mx-auto mt-4">
-          <label className="flex items-center justify-center w-40 h-40 border border-white/10 rounded-md bg-black/30 cursor-pointer hover:border-border1-focus transition">
-            <div className="flex flex-col items-center gap-2 text-text1">
-              <ImagePlus size={28} />
-              <span className="text-xs">Upload image</span>
-            </div>
+          <label className="flex items-center justify-center w-40 h-40 border border-white/10 rounded-md bg-black/30 cursor-pointer hover:border-border1-focus transition overflow-hidden">
+            {imagePreview ? (
+              <img
+                src={imagePreview}
+                alt="Game preview"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="flex flex-col items-center gap-2 text-text1">
+                <ImagePlus size={28} />
+                <span className="text-xs">Upload image</span>
+              </div>
+            )}
 
             <input
               type="file"
@@ -83,7 +92,15 @@ export default function CreateGameForm() {
               onChange={(e) => {
                 const file = e.target.files?.[0] || null;
 
-                // later: setValue("image", file)
+                setValue("image", file, {
+                  shouldDirty: true,
+                });
+
+                if (file) {
+                  setImagePreview(URL.createObjectURL(file));
+                } else {
+                  setImagePreview(null);
+                }
               }}
             />
           </label>

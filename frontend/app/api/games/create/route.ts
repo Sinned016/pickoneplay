@@ -5,8 +5,6 @@ export async function POST(req: Request) {
   try {
     console.log("STEP 2");
 
-    const body = await req.json();
-
     const cookie = req.headers.get("cookie") || "";
 
     const res = await fetch(
@@ -14,12 +12,12 @@ export async function POST(req: Request) {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          // IMPORTANT: forward cookies to backend
-          cookie: cookie,
+          cookie,
+          // DO NOT set Content-Type manually
         },
-        body: JSON.stringify(body),
-      },
+        body: req.body, // IMPORTANT: stream forward
+        duplex: "half", // required in Node (important in Next 13+)
+      } as any,
     );
 
     const data = await res.json();

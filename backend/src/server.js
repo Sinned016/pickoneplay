@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { connectDB } from "./config/db.js";
@@ -18,6 +19,14 @@ app.use(express.json()); // Node.js and express servers don't know how to natura
 app.use(express.urlencoded({ extended: true })); // Not fully required, this is used to parse data from an HTML form submission.
 
 app.use(cookieParser());
+
+// Cors
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
 
 // API Routes
 app.use("/auth", authRoutes);
