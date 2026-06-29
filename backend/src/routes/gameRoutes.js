@@ -4,6 +4,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 import {
   createGame,
   deleteGame,
+  getFullGame,
   getGame,
   getGames,
   updateGame,
@@ -21,5 +22,7 @@ router.put("/update/:id", authMiddleware, updateGame);
 router.get("/games", getGames);
 
 router.get("/:id", getGame);
+
+router.get("/getFullGame/:id", getFullGame);
 
 export default router;

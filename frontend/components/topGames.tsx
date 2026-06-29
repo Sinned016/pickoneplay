@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 export default function TopGames() {
@@ -28,10 +29,12 @@ export default function TopGames() {
             <div className="w-6 text-text1 font-semibold">{index + 1}</div>
 
             {/* image */}
-            <img
+            <Image
               src={game.image}
               alt={game.title}
-              className="w-12 h-12 rounded-md object-cover"
+              width={48}
+              height={48}
+              className="rounded-md object-cover"
             />
 
             {/* title */}
