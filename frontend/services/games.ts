@@ -18,3 +18,27 @@ export async function createGame(data: FormData) {
 
   return responseData;
 }
+
+export async function updatePairScore(data: any) {
+  console.log("STEP 1");
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/game/updatePairScore`,
+    {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  const responseData = await res.json();
+
+  if (!res.ok) {
+    throw new Error(responseData?.message || "Failed to update pair score");
+  }
+
+  return responseData;
+}

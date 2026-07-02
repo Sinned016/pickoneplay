@@ -1,16 +1,18 @@
 "use client";
+import { updatePairScore } from "@/services/games";
 import { GameWithPairs, Pair } from "@/types/Game";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
+import { Answer } from "./gameController";
 
 type GameProps = {
   game: GameWithPairs;
   setStep: Dispatch<SetStateAction<"info" | "session" | "results">>;
   index: number;
   setIndex: Dispatch<SetStateAction<number>>;
-  answers: string[];
-  setAnswers: Dispatch<SetStateAction<string[]>>;
+  answers: Answer[];
+  setAnswers: Dispatch<SetStateAction<Answer[]>>;
 };
 
 export default function GameSession({
@@ -23,14 +25,34 @@ export default function GameSession({
 }: GameProps) {
   const pair: Pair = game.pairs[index];
 
-  function choose(option: string) {
-    // Save answer
-    setAnswers((prev) => [...prev, option]);
+  async function choose(pairId: string, name: string, side: "left" | "right") {
+    console.log("🔥 CHOOSE START");
+
+    setAnswers((prev) => [
+      ...prev,
+      {
+        pairId,
+        selected: side,
+        name,
+      },
+    ]);
+
+    const dataToSend = {
+      pairId,
+      name,
+      side,
+    };
+
+    // update score
+    const result = await updatePairScore(dataToSend);
+
+    // Set error state if it goes wrong.
 
     // Go to next slide
     const nextIndex = index + 1;
 
     if (nextIndex >= game.pairs.length) {
+      // Finish game and go to results
       setStep("results");
     } else {
       setIndex(nextIndex);
@@ -53,15 +75,15 @@ export default function GameSession({
         Would you rather
       </h2>
 
-      <div className="flex flex-row gap-6 lg:gap-24 justify-center items-center">
-        <div>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex-1 flex flex-col items-center min-w-0">
           <h3 className="text-center text-xl md:text-3xl mb-2">
             {pair.leftName}
           </h3>
 
           <button
-            onClick={() => choose(pair.leftName)}
-            className="relative w-32 h-24 md:w-64 md:h-46 cursor-pointer animate-all duration-200 "
+            onClick={() => choose(pair.id, pair.leftName, "left")}
+            className="relative w-32 h-24 md:w-64 md:h-46 cursor-pointer animate-all duration-200"
           >
             {pair.leftImage ? (
               <Image
@@ -85,14 +107,14 @@ export default function GameSession({
 
         <span>OR</span>
 
-        <div>
+        <div className="flex-1 flex flex-col items-center min-w-0">
           <h3 className="text-center text-xl md:text-3xl mb-2">
-            {pair.leftName}
+            {pair.rightName}
           </h3>
 
           <button
-            onClick={() => choose(pair.rightName)}
-            className="relative w-32 h-24 md:w-64 md:h-46 cursor-pointer animate-all duration-200 "
+            onClick={() => choose(pair.id, pair.rightName, "right")}
+            className="relative w-32 h-24 md:w-64 md:h-46 cursor-pointer animate-all duration-200"
           >
             {pair.rightImage ? (
               <Image

@@ -291,4 +291,54 @@ const getFullGame = async (req, res) => {
   }
 };
 
-export { createGame, updateGame, deleteGame, getGame, getFullGame, getGames };
+const updatePairScore = async (req, res) => {
+  const { pairId, name, side } = req.body;
+
+  try {
+    const pair = await prisma.pair.findUnique({
+      where: {
+        id: pairId,
+      },
+    });
+
+    if (!pair) {
+      return res.status(400).json({
+        status: "Error",
+        message: "Pair not found",
+      });
+    }
+
+    // what we will update
+    const data =
+      side === "left"
+        ? { leftScore: { increment: 1 } }
+        : { rightScore: { increment: 1 } };
+
+    const updatedPair = await prisma.pair.update({
+      where: {
+        id: pairId,
+      },
+      data,
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: updatedPair,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+
+export {
+  createGame,
+  updateGame,
+  deleteGame,
+  getGame,
+  getFullGame,
+  getGames,
+  updatePairScore,
+};

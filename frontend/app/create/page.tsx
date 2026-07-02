@@ -108,7 +108,7 @@ export default function Create() {
       }
 
       if (pair.rightImage) {
-        formData.append(`pairs[${index}][rightImage]`, pair.rightImage);
+        formData.append(`pairs[${index}][rightImage]`, pair.rightImage); 
       }
     });
 

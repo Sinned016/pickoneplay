@@ -8,6 +8,7 @@ import {
   getGame,
   getGames,
   updateGame,
+  updatePairScore,
 } from "../controllers/gameController.js";
 import { upload } from "../middleware/uploadMiddleware.js";
 
@@ -24,5 +25,7 @@ router.get("/games", getGames);
 router.get("/:id", getGame);
 
 router.get("/getFullGame/:id", getFullGame);
+
+router.post("/updatePairScore", updatePairScore);
 
 export default router;

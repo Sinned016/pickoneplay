@@ -10,8 +10,8 @@ type GameProps = {
 export default function GameInfo({ game, setStep }: GameProps) {
   return (
     <div>
-      <div className="flex gap-6">
-        <div className="relative w-64 h-64">
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="relative w-full md:w-64 h-64">
           {game.image ? (
             <Image
               src={game.image}
