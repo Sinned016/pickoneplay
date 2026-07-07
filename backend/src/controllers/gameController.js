@@ -3,15 +3,6 @@ import { compressImage } from "../utils/compressImage.js";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
 
 // User adds 3 cards:
-// Card 1: Coke vs Fanta
-// Card 2: Sprite vs Pepsi
-// Card 3: A vs B
-
-//Then you send from frontend:
-//pairs: [card1, card2, card3]
-
-// I need more info about the game here
-// genres etc... so we can filter when searching on the frontend.
 const createGame = async (req, res) => {
   try {
     const user = req.user;
@@ -39,7 +30,7 @@ const createGame = async (req, res) => {
       });
     }
 
-    if (!Array.isArray(parsedPairs) || parsedPairs.length < 4) {
+    if (!Array.isArray(parsedPairs) || parsedPairs.length < 3) {
       return res.status(400).json({
         status: "error",
         message: "You must provide atleast 4 pairs",
@@ -183,12 +174,12 @@ const updateGame = async (req, res) => {
       include: { pairs: true },
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       data: updatedGame,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -206,7 +197,7 @@ const deleteGame = async (req, res) => {
 
     // Check if the user that is trying to delete is the actual owner of the game.
     if (game.createdBy !== user.id) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "Author error",
         message: "Only the author or admin can delete the game",
       });
@@ -219,12 +210,12 @@ const deleteGame = async (req, res) => {
       },
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Game deleted",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -233,14 +224,18 @@ const deleteGame = async (req, res) => {
 
 const getGames = async (req, res) => {
   try {
-    const games = await prisma.game.findMany();
+    const games = await prisma.game.findMany({
+      orderBy: {
+        title: "asc",
+      }
+    });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       data: games,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -255,12 +250,12 @@ const getGame = async (req, res) => {
       where: { id: gameId },
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       data: game,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -279,12 +274,12 @@ const getFullGame = async (req, res) => {
       },
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       data: game,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -321,12 +316,49 @@ const updatePairScore = async (req, res) => {
       data,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       data: updatedPair,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+
+const updatePlayScore = async (req, res) => {
+  const gameId = req.params.id;
+  try {
+    const game = await prisma.game.findUnique({
+      where: { id: gameId },
+    });
+
+    if (!game) {
+      return res.status(404).json({
+        status: "error",
+        message: "Could not find a game with that id",
+      });
+    }
+
+    const updatedGame = await prisma.game.update({
+      where: {
+        id: gameId
+      },
+      data: {
+        plays: {
+          increment: 1,
+        }
+      }
+    })
+
+    return res.status(200).json({
+      status: "success",
+      message: "Successfully updated play score"
+    })
+  } catch (error) {
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -341,4 +373,5 @@ export {
   getFullGame,
   getGames,
   updatePairScore,
+  updatePlayScore,
 };

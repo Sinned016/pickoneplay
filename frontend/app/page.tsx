@@ -28,6 +28,8 @@ export default async function Home() {
     games = [];
   }
 
+  console.log("GAMES: ", games);
+
   return (
     <div>
       <div className="mx-auto">
@@ -40,7 +42,7 @@ export default async function Home() {
 
           <div className="lg:flex-1">
             {/* Gotta make some type of system so i can calculate top games when i fetch in backend, then pass those down here. */}
-            <TopGames />
+            <TopGames games={games} />
           </div>
         </div>
       </div>

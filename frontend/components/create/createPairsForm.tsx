@@ -26,7 +26,7 @@ export default function CreatePairsForm() {
   };
 
   const removeLastPair = () => {
-    if (fields.length > 4) {
+    if (fields.length > 3) {
       remove(fields.length - 1);
     }
   };

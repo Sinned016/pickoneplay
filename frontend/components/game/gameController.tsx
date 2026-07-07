@@ -29,7 +29,7 @@ export default function GameController({ game }: GameProps) {
   }
 
   return (
-    <div>
+    <>
       {step === "info" && <GameInfo game={game} setStep={setStep} />}
 
       {step === "session" && (
@@ -52,6 +52,6 @@ export default function GameController({ game }: GameProps) {
           setAnswers={setAnswers}
         />
       )}
-    </div>
+    </>
   );
 }

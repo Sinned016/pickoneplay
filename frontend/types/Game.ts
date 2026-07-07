@@ -7,6 +7,7 @@ export type Game = {
   createdAt: string;
   category: string;
   tags: string[];
+  plays: number;
 };
 
 export type Pair = {

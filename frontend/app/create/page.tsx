@@ -25,7 +25,6 @@ export default function Create() {
         { leftName: "", leftImage: null, rightName: "", rightImage: null },
         { leftName: "", leftImage: null, rightName: "", rightImage: null },
         { leftName: "", leftImage: null, rightName: "", rightImage: null },
-        { leftName: "", leftImage: null, rightName: "", rightImage: null },
       ],
     },
   });
@@ -77,8 +76,8 @@ export default function Create() {
       (p) => p.leftName.trim() && p.rightName.trim(),
     );
 
-    if (filledPairs.length < 4) {
-      setStepError("You must fill at least 4 pairs.");
+    if (filledPairs.length < 3) {
+      setStepError("You must fill at least 3 pairs.");
       return;
     }
 
@@ -108,7 +107,7 @@ export default function Create() {
       }
 
       if (pair.rightImage) {
-        formData.append(`pairs[${index}][rightImage]`, pair.rightImage); 
+        formData.append(`pairs[${index}][rightImage]`, pair.rightImage);
       }
     });
 

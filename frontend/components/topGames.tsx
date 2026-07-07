@@ -1,7 +1,11 @@
+import { Game } from "@/types/Game";
 import Image from "next/image";
-import React from "react";
 
-export default function TopGames() {
+type Props = {
+  games: Game[];
+};
+
+export default function TopGames({ games }: Props) {
   const fakeGames = [
     { id: 1, title: "Would You Rather", image: "/catFlower.jpg" },
     { id: 2, title: "Truth or Dare", image: "/catHalloween.jpg" },
@@ -15,12 +19,14 @@ export default function TopGames() {
     { id: 10, title: "Quick Quiz", image: "/catHalloween.jpg" },
   ];
 
+  const topGames = [...games].sort((a, b) => b.plays - a.plays).slice(0, 10);
+
   return (
     <div className="">
       <h2 className="text-2xl text-text1 font-semibold mb-6">Top games</h2>
 
       <div className="flex flex-col gap-4">
-        {fakeGames.map((game, index) => (
+        {topGames.map((game, index) => (
           <div
             key={game.id}
             className="flex items-center gap-4 p-2 rounded-md hover:bg-white/5 transition-all cursor-pointer"
@@ -29,13 +35,25 @@ export default function TopGames() {
             <div className="w-6 text-text1 font-semibold">{index + 1}</div>
 
             {/* image */}
-            <Image
-              src={game.image}
-              alt={game.title}
-              width={48}
-              height={48}
-              className="rounded-md object-cover"
-            />
+            <div className="relative w-12 h-12 flex-shrink-0">
+              {game.image ? (
+                <Image
+                  src={game.image}
+                  alt={game.title}
+                  fill
+                  sizes="96px"
+                  className="rounded-md object-cover"
+                />
+              ) : (
+                <Image
+                  src={"/placeholder-card.png"}
+                  alt={game.title}
+                  fill
+                  sizes="96px"
+                  className="rounded-md object-cover"
+                />
+              )}
+            </div>
 
             {/* title */}
             <div className="text-text1 font-medium">{game.title}</div>

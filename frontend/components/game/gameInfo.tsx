@@ -1,3 +1,4 @@
+import { updatePlayScore } from "@/services/games";
 import { GameWithPairs } from "@/types/Game";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
@@ -8,6 +9,17 @@ type GameProps = {
 };
 
 export default function GameInfo({ game, setStep }: GameProps) {
+  async function startGame() {
+    try {
+      await updatePlayScore(game.id);
+
+      setStep("session");
+    } catch (err) {
+      // handle errors here
+      console.error("Failed to update play score, error: ", err);
+    }
+  }
+
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-6">
@@ -48,7 +60,7 @@ export default function GameInfo({ game, setStep }: GameProps) {
           </div> */}
 
           <button
-            onClick={() => setStep("session")}
+            onClick={startGame}
             className="px-6 py-3 rounded-xl bg-main1 hover:bg-main1-hover transition-all duration-200 cursor-pointer text-black font-bold"
           >
             Play Game
