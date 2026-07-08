@@ -17,19 +17,6 @@ export const metadata: Metadata = {
   description: "PickOnePlay is a 'would you rather' game",
 };
 
-/* COLORS
-
-background: bg-slate-950
-secondary background: bg-slate-900
-
-text: text-white
-secondary text: text-gray-300
-
-main: text-cyan-300
-secondary color: text-red-400
-
-*/
-
 export default async function RootLayout({
   children,
 }: Readonly<{

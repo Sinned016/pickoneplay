@@ -1,9 +1,12 @@
 "use client";
+import Button from "@/components/ui/Button";
+import VsDivider from "@/components/ui/VsDivider";
+import { cn } from "@/lib/utils";
 import { updatePairScore } from "@/services/games";
 import { GameWithPairs, Pair } from "@/types/Game";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Answer } from "./gameController";
 
 type GameProps = {
@@ -15,6 +18,49 @@ type GameProps = {
   setAnswers: Dispatch<SetStateAction<Answer[]>>;
 };
 
+type ChoiceTileProps = {
+  name: string;
+  image: string | null;
+  isSelected: boolean;
+  isDimmed: boolean;
+  onChoose: () => void;
+};
+
+function ChoiceTile({
+  name,
+  image,
+  isSelected,
+  isDimmed,
+  onChoose,
+}: ChoiceTileProps) {
+  return (
+    <div className="flex-1 flex flex-col items-center min-w-0">
+      <h3 className="text-center text-xl md:text-3xl mb-2 text-text1">
+        {name}
+      </h3>
+
+      <button
+        onClick={onChoose}
+        disabled={isSelected || isDimmed}
+        className={cn(
+          "relative w-32 h-32 md:w-64 md:h-64 rounded-xl border border-border1 overflow-hidden cursor-pointer transition-all duration-200",
+          "hover:border-main1/60 hover:scale-105 hover:shadow-md active:scale-95",
+          isSelected && "ring-2 ring-main1 scale-105",
+          isDimmed && "opacity-50 pointer-events-none",
+        )}
+      >
+        <Image
+          src={image || "/placeholder-card.png"}
+          alt={name}
+          fill
+          sizes="256px"
+          className="object-cover"
+        />
+      </button>
+    </div>
+  );
+}
+
 export default function GameSession({
   game,
   setStep,
@@ -24,9 +70,12 @@ export default function GameSession({
   setAnswers,
 }: GameProps) {
   const pair: Pair = game.pairs[index];
+  const [selectedSide, setSelectedSide] = useState<"left" | "right" | null>(
+    null,
+  );
 
   async function choose(pairId: string, name: string, side: "left" | "right") {
-    console.log("🔥 CHOOSE START");
+    setSelectedSide(side);
 
     setAnswers((prev) => [
       ...prev,
@@ -44,7 +93,7 @@ export default function GameSession({
     };
 
     // update score
-    const result = await updatePairScore(dataToSend);
+    await updatePairScore(dataToSend);
 
     // Set error state if it goes wrong.
 
@@ -56,6 +105,7 @@ export default function GameSession({
       setStep("results");
     } else {
       setIndex(nextIndex);
+      setSelectedSide(null);
     }
   }
 
@@ -67,74 +117,37 @@ export default function GameSession({
 
   return (
     <div>
-      <button onClick={back} className="cursor-pointer">
+      <Button
+        onClick={back}
+        variant="ghost"
+        size="icon"
+        aria-label="Back to game info"
+      >
         <ArrowLeft size={24} />
-      </button>
+      </Button>
 
-      <h2 className="text-3xl md:text-5xl text-center mb-24 mt-12">
+      <h2 className="text-3xl md:text-5xl text-center mb-24 mt-12 text-text1">
         Would you rather
       </h2>
 
       <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex-1 flex flex-col items-center min-w-0">
-          <h3 className="text-center text-xl md:text-3xl mb-2">
-            {pair.leftName}
-          </h3>
+        <ChoiceTile
+          name={pair.leftName}
+          image={pair.leftImage}
+          isSelected={selectedSide === "left"}
+          isDimmed={selectedSide !== null && selectedSide !== "left"}
+          onChoose={() => choose(pair.id, pair.leftName, "left")}
+        />
 
-          <button
-            onClick={() => choose(pair.id, pair.leftName, "left")}
-            className="relative w-32 h-24 md:w-64 md:h-46 cursor-pointer animate-all duration-200"
-          >
-            {pair.leftImage ? (
-              <Image
-                src={pair.leftImage}
-                alt={pair.leftName}
-                fill
-                sizes="256"
-                className="object-cover rounded-lg"
-              />
-            ) : (
-              <Image
-                src={"/placeholder-card.png"}
-                alt={pair.leftName}
-                fill
-                sizes="256"
-                className="object-cover rounded-lg"
-              />
-            )}
-          </button>
-        </div>
+        <VsDivider />
 
-        <span>OR</span>
-
-        <div className="flex-1 flex flex-col items-center min-w-0">
-          <h3 className="text-center text-xl md:text-3xl mb-2">
-            {pair.rightName}
-          </h3>
-
-          <button
-            onClick={() => choose(pair.id, pair.rightName, "right")}
-            className="relative w-32 h-24 md:w-64 md:h-46 cursor-pointer animate-all duration-200"
-          >
-            {pair.rightImage ? (
-              <Image
-                src={pair.rightImage}
-                alt={pair.rightName}
-                fill
-                sizes="256"
-                className="object-cover rounded-lg"
-              />
-            ) : (
-              <Image
-                src={"/placeholder-card.png"}
-                alt={pair.rightName}
-                fill
-                sizes="256"
-                className="object-cover rounded-lg"
-              />
-            )}
-          </button>
-        </div>
+        <ChoiceTile
+          name={pair.rightName}
+          image={pair.rightImage}
+          isSelected={selectedSide === "right"}
+          isDimmed={selectedSide !== null && selectedSide !== "right"}
+          onChoose={() => choose(pair.id, pair.rightName, "right")}
+        />
       </div>
     </div>
   );

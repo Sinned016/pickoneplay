@@ -1,7 +1,11 @@
 "use client";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import FormError from "@/components/ui/FormError";
+import Input from "@/components/ui/Input";
 import { RegisterAccount } from "@/services/auth";
 import { RegisterFormData } from "@/types/RegisterFormData";
-import { Lock, Mail, UserCircle, X } from "lucide-react";
+import { Lock, Mail, UserCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -49,9 +53,7 @@ export default function RegisterPage() {
 
   return (
     <div className="mt-32 md:mt-34 lg:mt-38">
-      <div className="bg-surface1 rounded-xl max-w-md mx-auto border border-border1-strong">
-        {/* <X className="w-5 h-5 absolute right-5 top-5" /> */}
-
+      <Card variant="surface1" bordered radius="2xl" padding="none" className="max-w-md mx-auto">
         <div className="flex flex-col gap-6 p-6">
           <h2 className="text-3xl text-text1 text-center">Register</h2>
 
@@ -60,105 +62,78 @@ export default function RegisterPage() {
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
           >
-            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
-              <Mail className="w-5 h-5" />
-              <input
-                {...register("email", {
-                  required: "Please enter your email",
-                  validate: (value) => {
-                    if (!value.includes("@")) {
-                      return "Email must contain @";
-                    }
-                  },
-                })}
-                className="outline-none focus:outline-none focus:ring-0 focus:border-transparent w-full"
-                type="email"
-                placeholder="Email"
-              />
-            </div>
+            <Input
+              icon={Mail}
+              type="email"
+              placeholder="Email"
+              error={!!errors.email}
+              {...register("email", {
+                required: "Please enter your email",
+                validate: (value) => {
+                  if (!value.includes("@")) {
+                    return "Email must contain @";
+                  }
+                },
+              })}
+            />
+            <FormError>{errors.email?.message}</FormError>
 
-            {errors.email && (
-              <div className="text-red-400 text-sm">{errors.email.message}</div>
-            )}
+            <Input
+              icon={UserCircle}
+              type="text"
+              placeholder="Username"
+              error={!!errors.username}
+              {...register("username", {
+                required: "Please enter your username",
+                minLength: {
+                  value: 6,
+                  message: "Minimum 6 characters",
+                },
+                maxLength: {
+                  value: 12,
+                  message: "Maximum 12 characters",
+                },
+              })}
+            />
+            <FormError>{errors.username?.message}</FormError>
 
-            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
-              <UserCircle className="w-5 h-5" />
-              <input
-                {...register("username", {
-                  required: "Please enter your username",
-                  minLength: {
-                    value: 6,
-                    message: "Minimum 6 characters",
-                  },
-                  maxLength: {
-                    value: 12,
-                    message: "Maximum 12 characters",
-                  },
-                })}
-                className="outline-none focus:outline-none focus:ring-0 focus:border-transparent w-full"
-                type="text"
-                placeholder="Username"
-              />
-            </div>
+            <Input
+              icon={Lock}
+              type="password"
+              placeholder="Password"
+              error={!!errors.password}
+              {...register("password", {
+                required: "Please enter a password",
+                minLength: {
+                  value: 8,
+                  message: "Password has to be minimum 8 characters",
+                },
+              })}
+            />
+            <FormError>{errors.password?.message}</FormError>
 
-            {errors.username && (
-              <div className="text-red-400 text-sm">
-                {errors.username.message}
-              </div>
-            )}
+            <Input
+              icon={Lock}
+              type="password"
+              placeholder="Password Confirmation"
+              error={!!errors.confirmPassword}
+              {...register("confirmPassword", {
+                required: "Please confirm your password",
+              })}
+            />
+            <FormError>{errors.confirmPassword?.message}</FormError>
 
-            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
-              <Lock className="w-5 h-5" />
-              <input
-                {...register("password", {
-                  required: "Please enter a password",
-                  minLength: {
-                    value: 8,
-                    message: "Password has to be minimum 8 characters",
-                  },
-                })}
-                className="outline-none focus:outline-none focus:ring-0 focus:border-transparent w-full"
-                type="password"
-                placeholder="Password"
-              />
-            </div>
-
-            {errors.password && (
-              <div className="text-red-400 text-sm">
-                {errors.password.message}
-              </div>
-            )}
-
-            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
-              <Lock className="w-5 h-5" />
-              <input
-                {...register("confirmPassword", {
-                  required: "Please confirm your password",
-                })}
-                className="outline-none focus:outline-none focus:ring-0 focus:border-transparent w-full"
-                type="password"
-                placeholder="Password Confirmation"
-              />
-            </div>
-
-            {errors.confirmPassword && (
-              <div className="text-red-400 text-sm">
-                {errors.confirmPassword.message}
-              </div>
-            )}
-
-            <button
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
               disabled={isSubmitting}
-              className="mt-6 py-2 px-3 bg-button hover:bg-button-hover w-full text-black text-lg rounded-sm transition-all duration-200 cursor-pointer"
+              className="w-full mt-6"
             >
               {isSubmitting ? "Loading..." : "Register"}
-            </button>
+            </Button>
 
-            {errors.root && (
-              <div className="text-red-400 text-sm mx-auto">
-                {errors.root.message}
-              </div>
-            )}
+            <FormError className="mx-auto">{errors.root?.message}</FormError>
 
             <div className="flex justify-center items-center gap-2 mt-4">
               <p className="text-sm">Already have an account?</p>
@@ -171,7 +146,7 @@ export default function RegisterPage() {
             </div>
           </form>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

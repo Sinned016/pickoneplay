@@ -1,6 +1,4 @@
-// GO to "Build and Deploy a Fully Responsive Modern Website using ReactJS and Tailwind CSS" by PedroTech and look at his example of a hero.
-
-import Link from "next/link";
+import Button from "@/components/ui/Button";
 
 export default function Hero() {
   return (
@@ -18,12 +16,9 @@ export default function Hero() {
       </p>
 
       <div className="mt-10 flex justify-center gap-4">
-        <Link
-          href={"/games"}
-          className="px-6 py-3 rounded-xl bg-main1 hover:bg-main1-hover transition-all duration-200 cursor-pointer text-black font-bold"
-        >
+        <Button href="/games" variant="primary" size="lg">
           Browse games
-        </Link>
+        </Button>
       </div>
     </header>
   );

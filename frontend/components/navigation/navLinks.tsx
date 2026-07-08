@@ -10,20 +10,21 @@ export default function NavLinks() {
   return (
     <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
       <Link
-        className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
+        className="text-text1 hover:text-text1-hover transition-colors cursor-pointer text-sm lg:text-base"
         href={"/games"}
       >
         Games
       </Link>
-      <Link
-        className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
-        href={"#"}
+      <span
+        aria-disabled
+        title="Coming soon"
+        className="text-muted/50 cursor-not-allowed text-sm lg:text-base"
       >
         Random
-      </Link>
+      </span>
       {isUserLoggedIn && (
         <Link
-          className=" text-gray-300 hover:text-white cursor-pointer text-sm lg:text-base"
+          className="text-text1 hover:text-text1-hover transition-colors cursor-pointer text-sm lg:text-base"
           href={"/create"}
         >
           Create

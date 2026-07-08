@@ -8,12 +8,11 @@ export default async function Navbar() {
       <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2 cursor-pointer">
-            {/* <div className="">Logo</div> */}
             <Link
               href={"/"}
-              className="text-lg sm:text-xl md:text-2xl font-medium"
+              className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-text1"
             >
-              <span className="">LOGO</span>
+              Pick<span className="text-main1">One</span>Play
             </Link>
           </div>
 

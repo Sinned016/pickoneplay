@@ -1,26 +1,13 @@
 "use client";
 
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import ImageUploadTile from "@/components/ui/ImageUploadTile";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
 import { CreateGameFormData } from "@/types/CreateGameFormData";
-import { ImagePlus, X } from "lucide-react";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-
-// id String @id @default(uuid())
-// title String @unique
-// description String
-// image String?
-// createdBy String
-// createdAt DateTime @default(now())
-// category String @default("random")
-// tags String[]
-
-// creator User @relation("GameCreator", fields: [createdBy], references: [id], onDelete: Cascade)
-// pairs Pair[]
-
-// IF i want the page to be wrapped in a card
-// bg-surface1 border border-border1-strong
-
-const testTags = ["Food", "Pasta", "Meat", "Soda"];
 
 export default function CreateGameForm() {
   const { register, watch, setValue } = useFormContext<CreateGameFormData>();
@@ -44,14 +31,13 @@ export default function CreateGameForm() {
   };
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl text-text1 ">
+    <div className="flex flex-col gap-2 rounded-xl text-text1">
       <div className="flex flex-col gap-6 mt-2">
         <div className="flex flex-col gap-2">
           <label className="font-medium text-lg" htmlFor="">
             Game Title *
           </label>
-          <input
-            className="py-1 px-2 border border-border1-strong rounded-sm outline-none bg-black/30 focus:border-border1-focus"
+          <Input
             type="text"
             placeholder="Game title..."
             {...register("title", { required: true })}
@@ -62,56 +48,30 @@ export default function CreateGameForm() {
           <label className="font-medium text-lg" htmlFor="">
             Description *
           </label>
-          <textarea
+          <Textarea
             rows={3}
-            className="py-1 px-2 border border-border1-strong rounded-sm outline-none bg-black/30 focus:border-border1-focus max-h-[160px] overflow-y-auto"
             placeholder="Description..."
             {...register("description", { required: true })}
           />
         </div>
 
         <div className="mx-auto mt-4">
-          <label className="flex items-center justify-center w-40 h-40 border border-white/10 rounded-md bg-black/30 cursor-pointer hover:border-border1-focus transition overflow-hidden">
-            {imagePreview ? (
-              <img
-                src={imagePreview}
-                alt="Game preview"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="flex flex-col items-center gap-2 text-text1">
-                <ImagePlus size={28} />
-                <span className="text-xs">Upload image</span>
-              </div>
-            )}
-
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0] || null;
-
-                setValue("image", file, {
-                  shouldDirty: true,
-                });
-
-                if (file) {
-                  setImagePreview(URL.createObjectURL(file));
-                } else {
-                  setImagePreview(null);
-                }
-              }}
-            />
-          </label>
+          <ImageUploadTile
+            preview={imagePreview}
+            alt="Game preview"
+            className="w-40 h-40"
+            onChange={(file) => {
+              setValue("image", file, { shouldDirty: true });
+              setImagePreview(file ? URL.createObjectURL(file) : null);
+            }}
+          />
         </div>
 
         <div className="flex flex-col gap-2">
           <label className="font-medium text-lg" htmlFor="">
             Category
           </label>
-          <input
-            className="py-1 px-2 border border-border1-strong rounded-sm outline-none bg-black/30 focus:border-border1-focus"
+          <Input
             type="text"
             placeholder="Category..."
             {...register("category")}
@@ -120,48 +80,39 @@ export default function CreateGameForm() {
 
         <div className="flex flex-col gap-2 flex-1">
           <span className="font-medium text-lg">Tags *</span>
-          <div className="flex items-center gap-2 py-1 px-2 border border-border1-strong rounded-sm outline-none bg-black/30 focus-within:border-border1-focus">
-            <input
-              className="flex-1 outline-none focus:outline-none focus:ring-0 focus:border-transparent w-full"
+          <div className="flex gap-2">
+            <Input
               type="text"
               placeholder="Tags..."
+              wrapperClassName="flex-1"
               value={tagInput}
-              onChange={(e) => {
-                setTagInput(e.target.value);
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addTag();
+                }
               }}
             />
-
-            <button
-              type="button"
-              className="text-text1 hover:text-main1 text-lg px-2 cursor-pointer"
-              onClick={addTag}
-            >
-              +
-            </button>
+            <Button type="button" variant="secondary" onClick={addTag}>
+              Add
+            </Button>
           </div>
 
           <div className="flex flex-wrap gap-2 mt-2">
-            {tags.map((tag, i) => {
-              return (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 py-1 px-3 rounded-full bg-main1 text-black text-sm font-medium"
-                >
-                  <span className="text-sm font-medium">{tag}</span>
-                  <button
-                    className="cursor-pointer"
-                    onClick={() =>
-                      setValue(
-                        "tags",
-                        tags.filter((_, index) => index !== i),
-                      )
-                    }
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-              );
-            })}
+            {tags.map((tag, i) => (
+              <Badge
+                key={i}
+                onRemove={() =>
+                  setValue(
+                    "tags",
+                    tags.filter((_, index) => index !== i),
+                  )
+                }
+              >
+                {tag}
+              </Badge>
+            ))}
           </div>
         </div>
       </div>

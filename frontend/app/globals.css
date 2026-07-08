@@ -1,16 +1,23 @@
 @import "tailwindcss";
 
+/*
+  Canonical scale — keep primitives (components/ui/*) aligned to this instead
+  of re-deciding radius/shadow per usage:
+    rounded-lg   -> controls (buttons, inputs, textareas)
+    rounded-xl   -> image-led tiles (thumbnails, upload dropzones)
+    rounded-2xl  -> content panels/cards
+    rounded-full -> pills/badges/circular icon buttons
+    shadow-md    -> default panel elevation
+    shadow-lg    -> popovers/dropdowns
+*/
+
 @theme {
     /* Background */
   --color-background: #0b0b0b;
 
-  /* Primary accent (blue) */
-  --color-main1: #67E8F9;        /* base blue */
+  /* Primary accent (cyan) */
+  --color-main1: #67E8F9;        /* base cyan */
   --color-main1-hover: #A5F3FC;  /* lighter + glow feel */
-
-  /* Secondary accent (red) */
-  --color-main2: #ef4444;        /* base red */
-  --color-main2-hover: #f87171;  /* softer bright red */
 
   /* Text */
   --color-text1: #d1d5db;
@@ -19,9 +26,11 @@
   /* Muted Text */
   --color-muted: #aeb6c2;
 
-  /* Buttons */
-  --color-button: #67E8F9;
-  --color-button-hover: #7DECFB;
+  /* Semantic */
+  --color-error: #f87171;
+  --color-error-hover: #fca5a5;
+  --color-success: #22c55e;
+  --color-success-hover: #4ade80;
 
   /* Surface layers (modern glassy dark UI) */
   --color-surface1: rgba(255, 255, 255, 0.03);
@@ -37,59 +46,6 @@
   --color-border1-focus: rgba(255, 255, 255, 0.9);
 }
 
-/* Try this as backgroundsada: 
-background:
-  radial-gradient(
-    circle at top left,
-    rgba(168,85,247,.08),
-    transparent 35%
-  ),
-  radial-gradient(
-    circle at bottom right,
-    rgba(59,130,246,.06),
-    transparent 35%
-  ),
-  #0b0b0b; */
-
-/* Could also try something like this for background color: 
-background: linear-gradient(
-  180deg,
-  #161616 0%,
-  #0d0d0d 100%
-); */
-
-/* Glow behind the hero:
-background:
-  radial-gradient(circle at top center,
-    rgba(120,120,255,0.15),
-    transparent 40%),
-  #0b0b0b; */
-
-/* Glow top left:
-  background:
-  radial-gradient(circle at 20% 20%,
-    rgba(139,92,246,.12),
-    transparent 30%),
-  radial-gradient(circle at 80% 40%,
-    rgba(59,130,246,.08),
-    transparent 30%),
-  #0a0a0a; */
-
-.background1 {
-  background:
-  radial-gradient(
-    circle at top left,
-    rgba(168, 85, 247, 0.08),
-    transparent 35%
-  ),
-  radial-gradient(
-    circle at bottom right,
-    rgba(59, 130, 246, 0.06),
-    transparent 35%
-  ),
-  #0b0b0b;
-}
-
 .background2 {
   background: linear-gradient(
     180deg,
@@ -98,28 +54,6 @@ background:
   );
 }
 
-
-/* .hero-bg {
-  background: linear-gradient(
-    180deg,
-    #1f2937 0%,
-    #111827 100%
-  );
-} */
-
-/* .hero-bg {
-  background:
-    radial-gradient(
-      circle at center 35%,
-      rgba(103, 232, 249, 0.12),
-      transparent 60%
-    ),
-    linear-gradient(
-      180deg,
-      #161616 0%,
-      #0d0d0d 100%
-    );
-} */
 
 .hero-bg {
   background:
@@ -138,15 +72,6 @@ background:
       #161616 0%,
       #0d0d0d 100%
     );
-}
-
-.card-shadow {
-  box-shadow:
-    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-    rgba(0, 0, 0, 0) 0px 0px 0px 1px,
-    rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-    rgba(0, 0, 0, 0.12) 0px 5px 15px 0px,
-    rgba(48, 49, 61, 0.08) 0px 15px 35px 0px;
 }
 
 @layer utilities {

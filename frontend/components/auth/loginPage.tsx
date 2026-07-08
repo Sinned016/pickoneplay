@@ -1,4 +1,8 @@
 "use client";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import FormError from "@/components/ui/FormError";
+import Input from "@/components/ui/Input";
 import { LoginAccount } from "@/services/auth";
 import { useAuth } from "@/store/useAuth";
 import { LoginFormData } from "@/types/LoginFormData";
@@ -42,9 +46,7 @@ export default function LoginPage() {
 
   return (
     <div className="mt-42 md:mt-46 lg:mt-52">
-      <div className="bg-surface1 rounded-xl max-w-md mx-auto border border-border1-strong">
-        {/* <X className="w-5 h-5 absolute right-5 top-5" /> */}
-
+      <Card variant="surface1" bordered radius="2xl" padding="none" className="max-w-md mx-auto">
         <div className="flex flex-col gap-6 p-6">
           <h2 className="text-3xl text-text1 text-center">Login</h2>
 
@@ -53,72 +55,50 @@ export default function LoginPage() {
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
           >
-            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
-              <Mail className="w-5 h-5" />
-              <input
-                {...register("email", {
-                  required: "Please enter your email",
-                  validate: (value) => {
-                    if (!value.includes("@")) {
-                      return "Email must contain @";
-                    }
-                  },
-                })}
-                className="outline-none focus:outline-none focus:ring-0 focus:border-transparent w-full"
-                type="email"
-                placeholder="Email"
-              />
-            </div>
+            <Input
+              icon={Mail}
+              type="email"
+              placeholder="Email"
+              error={!!errors.email}
+              {...register("email", {
+                required: "Please enter your email",
+                validate: (value) => {
+                  if (!value.includes("@")) {
+                    return "Email must contain @";
+                  }
+                },
+              })}
+            />
+            <FormError>{errors.email?.message}</FormError>
 
-            {errors.email && (
-              <div className="text-red-400 text-sm">{errors.email.message}</div>
-            )}
-
-            <div className="flex items-center gap-2 border border-border1-strong rounded-sm py-3 px-3 focus-within:border-border1-focus">
-              <Lock className="w-5 h-5" />
-              <input
-                {...register("password", {
-                  required: "Please enter a password",
-                  minLength: {
-                    value: 8,
-                    message: "Password has to be minimum 8 characters",
-                  },
-                })}
-                className="outline-none focus:outline-none focus:ring-0 focus:border-transparent w-full"
-                type="password"
-                placeholder="Password"
-              />
-            </div>
-
-            {errors.password && (
-              <div className="text-red-400 text-sm">
-                {errors.password.message}
-              </div>
-            )}
-
-            {/* <div className="">
-              <Link
-                className="text-sm text-text1 hover:text-text-hover"
-                href={"#"}
-              >
-                Forgot password?
-              </Link>
-            </div> */}
+            <Input
+              icon={Lock}
+              type="password"
+              placeholder="Password"
+              error={!!errors.password}
+              {...register("password", {
+                required: "Please enter a password",
+                minLength: {
+                  value: 8,
+                  message: "Password has to be minimum 8 characters",
+                },
+              })}
+            />
+            <FormError>{errors.password?.message}</FormError>
 
             <div className="mt-6">
-              <button
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
                 disabled={isSubmitting}
-                className="py-2 px-3 bg-button hover:bg-button-hover w-full text-black text-lg rounded-sm transition-all duration-200 cursor-pointer"
+                className="w-full"
               >
                 {isSubmitting ? "Loading..." : "Login"}
-              </button>
+              </Button>
             </div>
 
-            {errors.root && (
-              <div className="text-red-400 text-sm mx-auto">
-                {errors.root.message}
-              </div>
-            )}
+            <FormError className="mx-auto">{errors.root?.message}</FormError>
 
             <div className="flex justify-center items-center gap-2 mt-4">
               <p className="text-sm">Don't have an account?</p>
@@ -131,7 +111,7 @@ export default function LoginPage() {
             </div>
           </form>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

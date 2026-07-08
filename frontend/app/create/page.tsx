@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Button from "@/components/ui/Button";
+import FormError from "@/components/ui/FormError";
 import CreateGameForm from "@/components/create/createGameForm";
 import CreatePairsForm from "@/components/create/createPairsForm";
 import { useForm, FormProvider } from "react-hook-form";
 import { CreateGameFormData } from "@/types/CreateGameFormData";
 import { createGame } from "@/services/games";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 export default function Create() {
@@ -129,43 +130,32 @@ export default function Create() {
 
         {step === 2 && <CreatePairsForm />}
 
-        {stepError && (
-          <div className="text-red-400 text-sm mt-12 text-center">
-            {stepError}
-          </div>
-        )}
+        <FormError className="mt-12 text-center">{stepError}</FormError>
 
         <div className="mt-10">
           {step === 1 && (
             <div className="flex justify-end items-center">
-              <button
-                type="button"
-                className="px-4 py-2 rounded-lg bg-main1 hover:bg-main1-hover transition-all duration-200 cursor-pointer text-black font-medium right-0"
-                onClick={handleNext}
-              >
+              <Button type="button" variant="primary" onClick={handleNext}>
                 Next
-              </button>
+              </Button>
             </div>
           )}
 
           {step === 2 && (
             <div className="flex justify-between items-center">
-              <button
+              <Button
                 type="button"
-                className="px-4 py-2 rounded-lg bg-white/80 hover:bg-white transition-all duration-200 cursor-pointer text-black font-medium"
+                variant="secondary"
                 onClick={() => {
                   setStepError(null);
                   setStep(1);
                 }}
               >
                 Previous
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 rounded-lg bg-main1 hover:bg-main1-hover transition-all duration-200 cursor-pointer text-black font-medium"
-              >
+              </Button>
+              <Button type="submit" variant="primary" disabled={isSubmitting}>
                 {isSubmitting ? "Creating..." : "Create Game"}
-              </button>
+              </Button>
             </div>
           )}
         </div>
