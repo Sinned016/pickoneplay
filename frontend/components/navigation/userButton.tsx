@@ -19,7 +19,7 @@ export default function UserButton() {
         <div className="relative">
           <button
             onClick={() => setMenuOpen((prev) => !prev)}
-            className="p-1 rounded-full bg-main1 hover:bg-main1-hover cursor-pointer transition-all duration-200"
+            className="p-1 rounded-full bg-main1 hover:bg-main1-hover hover:shadow-glow-main1 cursor-pointer transition-all duration-200"
           >
             <User className="w-5 h-5 sm:w-6 sm:h-6 text-black stroke-3" />
           </button>

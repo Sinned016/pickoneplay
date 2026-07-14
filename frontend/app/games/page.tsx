@@ -1,5 +1,12 @@
+import EmptyState from "@/components/ui/EmptyState";
+import { LayoutGrid } from "lucide-react";
+
 export default function Games() {
   return (
-    <div className="max-w-7xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">All games</div>
+    <EmptyState
+      icon={LayoutGrid}
+      title="All games"
+      description="Browse every PickOnePlay game — coming soon."
+    />
   );
 }

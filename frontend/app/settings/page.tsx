@@ -1,5 +1,12 @@
-import React from "react";
+import EmptyState from "@/components/ui/EmptyState";
+import { Settings as SettingsIcon } from "lucide-react";
 
 export default function Settings() {
-  return <div>Settings</div>;
+  return (
+    <EmptyState
+      icon={SettingsIcon}
+      title="Settings"
+      description="Account settings are coming soon."
+    />
+  );
 }

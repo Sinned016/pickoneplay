@@ -125,12 +125,28 @@ export default function Create() {
 
   return (
     <FormProvider {...methods}>
+      <div className="flex items-center justify-center gap-3 mb-10">
+        <div
+          className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+            step === 1 ? "bg-main1 shadow-glow-main1" : "bg-main1/40"
+          }`}
+        />
+        <div className="w-12 h-px bg-border1-strong" />
+        <div
+          className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+            step === 2
+              ? "bg-main2 shadow-glow-main2"
+              : "border border-border1-strong"
+          }`}
+        />
+      </div>
+
       <form onSubmit={handleSubmit(onSubmit)} className="">
         {step === 1 && <CreateGameForm />}
 
         {step === 2 && <CreatePairsForm />}
 
-        <FormError className="mt-12 text-center">{stepError}</FormError>
+        <FormError className="mt-12 justify-center">{stepError}</FormError>
 
         <div className="mt-10">
           {step === 1 && (

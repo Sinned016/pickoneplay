@@ -45,9 +45,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mt-42 md:mt-46 lg:mt-52">
-      <Card variant="surface1" bordered radius="2xl" padding="none" className="max-w-md mx-auto">
+    <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <Card
+        variant="surface1"
+        bordered
+        radius="2xl"
+        padding="none"
+        className="max-w-md w-full mx-auto shadow-glow-main1"
+      >
         <div className="flex flex-col gap-6 p-6">
+          <div className="mx-auto w-fit rounded-full p-3 bg-gradient-to-br from-main1/20 to-main2/20 border border-border1">
+            <Lock className="w-5 h-5 text-main1" />
+          </div>
+
           <h2 className="text-3xl text-text1 text-center">Login</h2>
 
           <form
@@ -98,7 +108,7 @@ export default function LoginPage() {
               </Button>
             </div>
 
-            <FormError className="mx-auto">{errors.root?.message}</FormError>
+            <FormError className="justify-center">{errors.root?.message}</FormError>
 
             <div className="flex justify-center items-center gap-2 mt-4">
               <p className="text-sm">Don't have an account?</p>

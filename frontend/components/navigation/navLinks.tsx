@@ -18,7 +18,7 @@ export default function NavLinks() {
       <span
         aria-disabled
         title="Coming soon"
-        className="text-muted/50 cursor-not-allowed text-sm lg:text-base"
+        className="border border-border1 rounded-full px-2.5 py-1 text-muted/60 cursor-not-allowed text-xs lg:text-sm"
       >
         Random
       </span>

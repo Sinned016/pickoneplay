@@ -103,13 +103,15 @@ export default function GameResults({
                     src={pair.leftImage || "/placeholder-card.png"}
                     alt={pair.leftName}
                     fill
-                    className={`object-cover rounded-xl border-4 ${
-                      pickedLeft ? "border-success" : "border-transparent"
+                    className={`object-cover rounded-xl border-4 transition-colors ${
+                      pickedLeft
+                        ? "border-main1 shadow-glow-main1"
+                        : "border-transparent"
                     }`}
                   />
                 </div>
 
-                <div className="mt-3 text-2xl font-bold text-text1">
+                <div className="mt-3 text-2xl font-bold text-main1">
                   {pair.leftScore}
                 </div>
 
@@ -122,7 +124,9 @@ export default function GameResults({
                 </div>
               </div>
 
-              <div className="text-xl font-bold text-muted">VS</div>
+              <span className="text-sm md:text-base font-black tracking-wide text-text1 shrink-0">
+                VS
+              </span>
 
               {/* RIGHT */}
               <div className="flex flex-col items-center flex-1">
@@ -135,13 +139,15 @@ export default function GameResults({
                     src={pair.rightImage || "/placeholder-card.png"}
                     alt={pair.rightName}
                     fill
-                    className={`object-cover rounded-xl border-4 ${
-                      pickedRight ? "border-success" : "border-transparent"
+                    className={`object-cover rounded-xl border-4 transition-colors ${
+                      pickedRight
+                        ? "border-main2 shadow-glow-main2"
+                        : "border-transparent"
                     }`}
                   />
                 </div>
 
-                <div className="mt-3 text-2xl font-bold text-text1">
+                <div className="mt-3 text-2xl font-bold text-main2">
                   {pair.rightScore}
                 </div>
 

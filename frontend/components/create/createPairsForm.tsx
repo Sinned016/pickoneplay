@@ -70,6 +70,7 @@ export default function CreatePairsForm() {
                 preview={previews[`${i}-left`] ?? null}
                 alt="Left image preview"
                 className="h-40 w-full"
+                accent="main1"
                 onChange={(file) => handleImageChange(file, i, "left")}
               />
             </div>
@@ -87,6 +88,7 @@ export default function CreatePairsForm() {
                 preview={previews[`${i}-right`] ?? null}
                 alt="Right image preview"
                 className="h-40 w-full"
+                accent="main2"
                 onChange={(file) => handleImageChange(file, i, "right")}
               />
             </div>

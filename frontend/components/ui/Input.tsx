@@ -13,8 +13,10 @@ const Input = forwardRef<HTMLInputElement, Props>(
     return (
       <div
         className={cn(
-          "flex items-center gap-2 rounded-lg border bg-surface1 py-2.5 px-3 transition-colors focus-within:border-border1-focus",
-          error ? "border-error" : "border-border1-strong",
+          "flex items-center gap-2 rounded-lg border bg-surface1 backdrop-blur-sm py-2.5 px-3 transition-all duration-200 focus-within:border-border1-focus",
+          error
+            ? "border-error focus-within:shadow-glow-error"
+            : "border-border1-strong focus-within:shadow-glow-main1",
           wrapperClassName,
         )}
       >

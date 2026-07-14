@@ -2,23 +2,38 @@ import Button from "@/components/ui/Button";
 
 export default function Hero() {
   return (
-    <header className="py-24 text-center hero-bg">
-      <p className="text-main1 font-medium mb-3">PickOnePlay</p>
+    <header className="relative overflow-hidden py-24 md:py-32 text-center hero-bg">
+      <div
+        className="hidden md:block absolute -z-10 top-1/2 left-[8%] -translate-y-1/2 w-72 h-72 rounded-full bg-main1/20 blur-3xl"
+        aria-hidden
+      />
+      <div
+        className="hidden md:block absolute -z-10 top-1/2 right-[8%] -translate-y-1/2 w-72 h-72 rounded-full bg-main2/20 blur-3xl"
+        aria-hidden
+      />
 
-      <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight">
-        The Ultimate
-        <span className="block text-main1">Would You Rather</span>
-        Experience
-      </h1>
+      <div className="relative mx-auto max-w-2xl px-4">
+        <span className="inline-flex items-center py-1.5 px-4 mb-5 rounded-full border border-border1 backdrop-blur-sm text-sm font-medium text-main1">
+          PickOnePlay
+        </span>
 
-      <p className="mt-6 text-lg text-text1">
-        Create games, Challenge friends and explore.
-      </p>
+        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.05]">
+          The Ultimate
+          <span className="block bg-gradient-to-r from-main1 via-white to-main2 bg-clip-text text-transparent">
+            Would You Rather
+          </span>
+          Experience
+        </h1>
 
-      <div className="mt-10 flex justify-center gap-4">
-        <Button href="/games" variant="primary" size="lg">
-          Browse games
-        </Button>
+        <p className="mt-6 text-lg text-text1">
+          Create games, challenge friends, and see which side wins.
+        </p>
+
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <Button href="/games" variant="primary" size="lg">
+            Browse games
+          </Button>
+        </div>
       </div>
     </header>
   );

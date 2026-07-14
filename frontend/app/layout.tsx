@@ -43,7 +43,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} background2 text-text1 flex flex-col min-h-screen `}
+        className={`${roboto.className} background2 text-text1 flex flex-col min-h-screen antialiased`}
       >
         <AuthInitializer user={user} />
 

@@ -7,16 +7,14 @@ type Props = {
   games: Game[];
 };
 
-export default function FeaturedGames({ games }: Props) {
+export default function RecommendedGames({ games }: Props) {
   return (
-    <div>
-      <div className="flex flex-row justify-between items-center mb-6">
-        <h2 className="flex items-center text-2xl text-text1 font-semibold">
-          Featured games
-        </h2>
-      </div>
+    <div className="mt-16">
+      <h2 className="text-2xl text-text1 font-semibold mb-6">
+        Recommended games
+      </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
         {games.map((game) => (
           <Link href={`/game/${game.id}`} key={game.id}>
             <Card variant="ghost" interactive radius="xl" padding="none">
@@ -25,7 +23,7 @@ export default function FeaturedGames({ games }: Props) {
                   src={game.image ?? "/placeholder-card.png"}
                   alt={game.title}
                   fill
-                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-cover"
                 />
 

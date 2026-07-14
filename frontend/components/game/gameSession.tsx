@@ -1,6 +1,5 @@
 "use client";
 import Button from "@/components/ui/Button";
-import VsDivider from "@/components/ui/VsDivider";
 import { cn } from "@/lib/utils";
 import { updatePairScore } from "@/services/games";
 import { GameWithPairs, Pair } from "@/types/Game";
@@ -21,21 +20,38 @@ type GameProps = {
 type ChoiceTileProps = {
   name: string;
   image: string | null;
+  side: "left" | "right";
   isSelected: boolean;
   isDimmed: boolean;
   onChoose: () => void;
 };
 
+const sideSelectedClasses: Record<"left" | "right", string> = {
+  left: "ring-2 ring-main1 shadow-glow-main1 scale-105",
+  right: "ring-2 ring-main2 shadow-glow-main2 scale-105",
+};
+
+const sideTextClasses: Record<"left" | "right", string> = {
+  left: "text-main1",
+  right: "text-main2",
+};
+
 function ChoiceTile({
   name,
   image,
+  side,
   isSelected,
   isDimmed,
   onChoose,
 }: ChoiceTileProps) {
   return (
     <div className="flex-1 flex flex-col items-center min-w-0">
-      <h3 className="text-center text-xl md:text-3xl mb-2 text-text1">
+      <h3
+        className={cn(
+          "text-center text-xl md:text-3xl mb-2 transition-colors duration-200",
+          isSelected ? sideTextClasses[side] : "text-text1",
+        )}
+      >
         {name}
       </h3>
 
@@ -44,8 +60,8 @@ function ChoiceTile({
         disabled={isSelected || isDimmed}
         className={cn(
           "relative w-32 h-32 md:w-64 md:h-64 rounded-xl border border-border1 overflow-hidden cursor-pointer transition-all duration-200",
-          "hover:border-main1/60 hover:scale-105 hover:shadow-md active:scale-95",
-          isSelected && "ring-2 ring-main1 scale-105",
+          "hover:scale-105 hover:border-border1-strong active:scale-95",
+          isSelected && sideSelectedClasses[side],
           isDimmed && "opacity-50 pointer-events-none",
         )}
       >
@@ -126,24 +142,30 @@ export default function GameSession({
         <ArrowLeft size={24} />
       </Button>
 
-      <h2 className="text-3xl md:text-5xl text-center mb-24 mt-12 text-text1">
-        Would you rather
-      </h2>
+      <div className="flex items-center justify-center gap-4 mb-24 mt-12">
+        <h2 className="text-3xl md:text-5xl text-center text-text1">
+          Would you rather
+        </h2>
+      </div>
 
       <div className="flex flex-col md:flex-row items-center justify-between gap-6">
         <ChoiceTile
           name={pair.leftName}
           image={pair.leftImage}
+          side="left"
           isSelected={selectedSide === "left"}
           isDimmed={selectedSide !== null && selectedSide !== "left"}
           onChoose={() => choose(pair.id, pair.leftName, "left")}
         />
 
-        <VsDivider />
+        <span className="text-sm md:text-base font-black tracking-wide text-text1 shrink-0">
+          VS
+        </span>
 
         <ChoiceTile
           name={pair.rightName}
           image={pair.rightImage}
+          side="right"
           isSelected={selectedSide === "right"}
           isDimmed={selectedSide !== null && selectedSide !== "right"}
           onChoose={() => choose(pair.id, pair.rightName, "right")}

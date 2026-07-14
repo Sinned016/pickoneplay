@@ -14,8 +14,8 @@ type Props = HTMLAttributes<HTMLDivElement> & {
 };
 
 const variantClasses: Record<CardVariant, string> = {
-  surface1: "bg-surface1 shadow-md",
-  surface2: "bg-surface2 shadow-md",
+  surface1: "bg-surface1 backdrop-blur-xl shadow-md",
+  surface2: "bg-surface2 backdrop-blur-xl shadow-md",
   ghost: "bg-transparent",
 };
 
@@ -47,16 +47,26 @@ export default function Card({
   children,
   ...props
 }: Props) {
+  const borderColor =
+    variant === "ghost"
+      ? bordered
+        ? "border-border1-strong"
+        : "border-transparent"
+      : bordered
+        ? "border-border1-strong"
+        : "border-border1";
+
   return (
     <div
       className={cn(
         variantClasses[variant],
+        "border",
+        borderColor,
         paddingClasses[padding],
         radiusClasses[radius],
-        bordered && "border border-border1-strong",
         interactive &&
           cn(
-            "transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-lg",
+            "transition-all cursor-pointer hover:border-border1-strong",
             interactiveHoverClasses[variant],
           ),
         className,

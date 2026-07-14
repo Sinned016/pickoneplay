@@ -1,6 +1,6 @@
 "use client";
 
-import { GameWithPairs } from "@/types/Game";
+import { Game, GameWithPairs } from "@/types/Game";
 import { useState } from "react";
 import GameInfo from "./gameInfo";
 import GameSession from "./gameSession";
@@ -8,6 +8,7 @@ import GameResults from "./gameResults";
 
 type GameProps = {
   game: GameWithPairs;
+  recommendedGames: Game[];
 };
 
 export type Answer = {
@@ -16,7 +17,7 @@ export type Answer = {
   name: string;
 };
 
-export default function GameController({ game }: GameProps) {
+export default function GameController({ game, recommendedGames }: GameProps) {
   // States to handle if game has started and more.
   const [step, setStep] = useState<"info" | "session" | "results">("info");
   const [index, setIndex] = useState(0);
@@ -30,7 +31,13 @@ export default function GameController({ game }: GameProps) {
 
   return (
     <>
-      {step === "info" && <GameInfo game={game} setStep={setStep} />}
+      {step === "info" && (
+        <GameInfo
+          game={game}
+          setStep={setStep}
+          recommendedGames={recommendedGames}
+        />
+      )}
 
       {step === "session" && (
         <GameSession

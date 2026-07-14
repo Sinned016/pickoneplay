@@ -35,7 +35,7 @@ export default async function Home() {
       <div className="mx-auto">
         <Hero />
 
-        <div className="flex flex-col lg:flex-row gap-6 mt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-6 mt-8 mb-16 sm:mb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="lg:flex-2">
             <FeaturedGames games={games} />
           </div>

@@ -8,6 +8,12 @@ type Props = {
   onChange: (file: File | null) => void;
   alt?: string;
   className?: string;
+  accent?: "main1" | "main2";
+};
+
+const accentClasses: Record<"main1" | "main2", string> = {
+  main1: "hover:border-main1/60 hover:shadow-glow-main1",
+  main2: "hover:border-main2/60 hover:shadow-glow-main2",
 };
 
 export default function ImageUploadTile({
@@ -15,11 +21,13 @@ export default function ImageUploadTile({
   onChange,
   alt = "Preview",
   className,
+  accent = "main1",
 }: Props) {
   return (
     <label
       className={cn(
-        "flex items-center justify-center rounded-xl border border-border1 bg-surface1 cursor-pointer overflow-hidden transition-colors hover:border-border1-focus",
+        "flex items-center justify-center rounded-xl border border-border1 bg-surface1 backdrop-blur-sm cursor-pointer overflow-hidden transition-all duration-200",
+        accentClasses[accent],
         className,
       )}
     >
