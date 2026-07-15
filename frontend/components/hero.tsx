@@ -1,6 +1,11 @@
+"use client";
 import Button from "@/components/ui/Button";
+import { useAuth } from "@/store/useAuth";
 
 export default function Hero() {
+  const user = useAuth((state) => state.user);
+  const isUserLoggedIn = !!user;
+
   return (
     <header className="relative overflow-hidden py-24 md:py-32 text-center hero-bg">
       <div
@@ -33,6 +38,16 @@ export default function Hero() {
           <Button href="/games" variant="primary" size="lg">
             Browse games
           </Button>
+
+          {isUserLoggedIn ? (
+            <Button href="/create" variant="accent" size="lg">
+              Create Game
+            </Button>
+          ) : (
+            <Button href="/login" variant="accent" size="lg">
+              Login to create
+            </Button>
+          )}
         </div>
       </div>
     </header>

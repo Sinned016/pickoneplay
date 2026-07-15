@@ -103,6 +103,7 @@ export default function GameResults({
                     src={pair.leftImage || "/placeholder-card.png"}
                     alt={pair.leftName}
                     fill
+                    sizes="256px"
                     className={`object-cover rounded-xl border-4 transition-colors ${
                       pickedLeft
                         ? "border-main1 shadow-glow-main1"
@@ -139,6 +140,7 @@ export default function GameResults({
                     src={pair.rightImage || "/placeholder-card.png"}
                     alt={pair.rightName}
                     fill
+                    sizes="256px"
                     className={`object-cover rounded-xl border-4 transition-colors ${
                       pickedRight
                         ? "border-main2 shadow-glow-main2"

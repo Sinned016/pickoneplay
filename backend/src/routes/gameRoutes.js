@@ -7,6 +7,7 @@ import {
   getFullGame,
   getGame,
   getGames,
+  getHomeGames,
   updateGame,
   updatePairScore,
   updatePlayScore,
@@ -20,6 +21,8 @@ router.post("/create", authMiddleware, upload.any(), createGame);
 router.delete("/delete/:id", authMiddleware, deleteGame);
 
 router.put("/update/:id", authMiddleware, updateGame);
+
+router.get("/games/home", getHomeGames);
 
 router.get("/games", getGames);
 

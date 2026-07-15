@@ -1,14 +1,18 @@
+import CategoryBrowse from "@/components/categoryBrowse";
+import CreateGameBanner from "@/components/createGameBanner";
 import FeaturedGames from "@/components/featuredGames";
 import Hero from "@/components/hero";
 import TopGames from "@/components/topGames";
 import { Game } from "@/types/Game";
 
 export default async function Home() {
-  let games: Game[] = [];
+  let topGames: Game[] = [];
+  let newGames: Game[] = [];
+  let categories: string[] = [];
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/game/games`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/game/games/home`,
     );
 
     if (!res.ok) {
@@ -22,13 +26,12 @@ export default async function Home() {
       throw new Error(json.message);
     }
 
-    games = json.data;
+    topGames = json.data.topGames;
+    newGames = json.data.newGames;
+    categories = json.data.categories;
   } catch (err) {
     console.error(err);
-    games = [];
   }
-
-  console.log("GAMES: ", games);
 
   return (
     <div>
@@ -37,14 +40,18 @@ export default async function Home() {
 
         <div className="flex flex-col lg:flex-row gap-6 mt-8 mb-16 sm:mb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="lg:flex-2">
-            <FeaturedGames games={games} />
+            <FeaturedGames games={newGames} />
           </div>
 
           <div className="lg:flex-1">
             {/* Gotta make some type of system so i can calculate top games when i fetch in backend, then pass those down here. */}
-            <TopGames games={games} />
+            <TopGames games={topGames} />
           </div>
         </div>
+
+        <CategoryBrowse categories={categories} />
+
+        <CreateGameBanner />
       </div>
     </div>
   );

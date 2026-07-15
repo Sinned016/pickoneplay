@@ -27,9 +27,12 @@ type ChoiceTileProps = {
 };
 
 const sideSelectedClasses: Record<"left" | "right", string> = {
-  left: "ring-2 ring-main1 shadow-glow-main1 scale-105",
-  right: "ring-2 ring-main2 shadow-glow-main2 scale-105",
+  left: "ring-2 ring-main1 shadow-glow-main1",
+  right: "ring-2 ring-main2 shadow-glow-main2",
 };
+
+const HOLD_MS = 350;
+const EXIT_MS = 220;
 
 const sideTextClasses: Record<"left" | "right", string> = {
   left: "text-main1",
@@ -60,7 +63,7 @@ function ChoiceTile({
         disabled={isSelected || isDimmed}
         className={cn(
           "relative w-32 h-32 md:w-64 md:h-64 rounded-xl border border-border1 overflow-hidden cursor-pointer transition-all duration-200",
-          "hover:scale-105 hover:border-border1-strong active:scale-95",
+          "hover:scale-[1.02] hover:border-border1-strong active:scale-[0.98]",
           isSelected && sideSelectedClasses[side],
           isDimmed && "opacity-50 pointer-events-none",
         )}
@@ -89,6 +92,7 @@ export default function GameSession({
   const [selectedSide, setSelectedSide] = useState<"left" | "right" | null>(
     null,
   );
+  const [isExiting, setIsExiting] = useState(false);
 
   async function choose(pairId: string, name: string, side: "left" | "right") {
     setSelectedSide(side);
@@ -113,6 +117,11 @@ export default function GameSession({
 
     // Set error state if it goes wrong.
 
+    // Hold briefly so the selection is visible, then animate out.
+    await new Promise((resolve) => setTimeout(resolve, HOLD_MS));
+    setIsExiting(true);
+    await new Promise((resolve) => setTimeout(resolve, EXIT_MS));
+
     // Go to next slide
     const nextIndex = index + 1;
 
@@ -122,6 +131,7 @@ export default function GameSession({
     } else {
       setIndex(nextIndex);
       setSelectedSide(null);
+      setIsExiting(false);
     }
   }
 
@@ -148,7 +158,13 @@ export default function GameSession({
         </h2>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div
+        key={index}
+        className={cn(
+          "flex flex-col md:flex-row items-center justify-between gap-6",
+          isExiting ? "pair-exit" : "pair-enter",
+        )}
+      >
         <ChoiceTile
           name={pair.leftName}
           image={pair.leftImage}

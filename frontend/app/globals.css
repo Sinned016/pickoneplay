@@ -105,6 +105,14 @@
   .animate-duration-300 {
     animation-duration: 300ms;
   }
+
+  .pair-enter {
+    animation: pairEnter 300ms ease-out both;
+  }
+
+  .pair-exit {
+    animation: pairExit 220ms ease-in both;
+  }
 }
 
 @keyframes slideInFromTop {
@@ -116,5 +124,29 @@
   to {
     opacity: 1;
     transform: translateY(0)
+  }
+}
+
+@keyframes pairEnter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pairExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-0.75rem);
   }
 }

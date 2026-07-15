@@ -227,12 +227,53 @@ const getGames = async (req, res) => {
     const games = await prisma.game.findMany({
       orderBy: {
         title: "asc",
-      }
+      },
     });
 
     return res.status(200).json({
       status: "success",
       data: games,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+
+const getHomeGames = async (req, res) => {
+  try {
+    const [topGames, newGames, categories] = await Promise.all([
+      prisma.game.findMany({
+        take: 10,
+        orderBy: {
+          plays: "desc",
+        },
+      }),
+
+      prisma.game.findMany({
+        take: 12,
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+
+      prisma.game.groupBy({
+        by: ["category"],
+        orderBy: {
+          category: "asc",
+        },
+      }),
+    ]);
+
+    return res.status(200).json({
+      status: "success",
+      data: {
+        topGames,
+        newGames,
+        categories: categories.map((c) => c.category),
+      },
     });
   } catch (error) {
     return res.status(500).json({
@@ -344,19 +385,19 @@ const updatePlayScore = async (req, res) => {
 
     const updatedGame = await prisma.game.update({
       where: {
-        id: gameId
+        id: gameId,
       },
       data: {
         plays: {
           increment: 1,
-        }
-      }
-    })
+        },
+      },
+    });
 
     return res.status(200).json({
       status: "success",
-      message: "Successfully updated play score"
-    })
+      message: "Successfully updated play score",
+    });
   } catch (error) {
     return res.status(500).json({
       status: "error",
@@ -372,6 +413,7 @@ export {
   getGame,
   getFullGame,
   getGames,
+  getHomeGames,
   updatePairScore,
   updatePlayScore,
 };

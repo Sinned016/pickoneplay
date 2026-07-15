@@ -75,7 +75,9 @@ export default function CreatePairsForm() {
               />
             </div>
 
-            <VsDivider />
+            <span className="px-8 text-sm md:text-base font-black tracking-wide text-text1 shrink-0">
+              VS
+            </span>
 
             {/* Right side */}
             <div className="flex-1 flex flex-col gap-2">
