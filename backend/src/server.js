@@ -8,11 +8,25 @@ import { disconnectDB } from "./config/db.js";
 // Import Routes
 import authRoutes from "./routes/authRoutes.js";
 import gameRoutes from "./routes/gameRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 config();
 connectDB();
 
 const app = express();
+
+// Cors
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://pickoneplay.online",
+      "https://www.pickoneplay.online",
+      "https://pickoneplay-frontend-git-main-dennis-projects-4684ea3f.vercel.app",
+    ],
+    credentials: true,
+  }),
+);
 
 // Body parsing middlewares
 app.use(express.json()); // Node.js and express servers don't know how to naturally handle json by defauly, so we need this.
@@ -20,17 +34,10 @@ app.use(express.urlencoded({ extended: true })); // Not fully required, this is 
 
 app.use(cookieParser());
 
-// Cors
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  }),
-);
-
 // API Routes
 app.use("/auth", authRoutes);
 app.use("/game", gameRoutes);
+app.use("/profile", profileRoutes);
 
 app.get("/hello", (req, res) => {
   res.json({ message: "Hello World" });

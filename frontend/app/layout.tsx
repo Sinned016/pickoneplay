@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navigation/navbar";
 import AuthInitializer from "@/components/authInitializer";
+import MotionProvider from "@/components/motionProvider";
 import { cookies } from "next/headers";
 
 
@@ -28,11 +29,10 @@ export default async function RootLayout({
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
-
       // IMPORTANT: forward cookies to backend
       cookie: cookieStore.toString(),
     },
+    cache: "no-store",
   });
 
   const data = await res.json();
@@ -47,11 +47,13 @@ export default async function RootLayout({
       >
         <AuthInitializer user={user} />
 
-        <Navbar />
+        <MotionProvider>
+          <Navbar />
 
-        <div className="flex-1">{children}</div>
+          <div className="flex-1 overflow-x-clip">{children}</div>
 
-        <Footer />
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );
